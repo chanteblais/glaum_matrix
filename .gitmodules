@@ -1,0 +1,3 @@
+[submodule "client/public/PixelCraft"]
+	path = client/public/PixelCraft
+	url = https://github.com/chanteblais/PixelCraft
