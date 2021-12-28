@@ -1,4 +1,4 @@
-const GlaumMatrix = require('./matrix.js')
+
 const express = require('express')
 const app = express()
 const port = 3000
@@ -8,16 +8,26 @@ app.use(bodyParser.text());
 
 const path = require('path')
 
-var matrix = new GlaumMatrix()
+const args = process.argv.slice(2);
+var matrix;
+
+if (!args[0] || args[0] != "dev") {
+  const GlaumMatrix = require('./matrix.js')
+  matrix = new GlaumMatrix()
+}
+
+
 
 app.use(express.static(path.join(__dirname, 'public/PixelCraft')))
 
-app.post('/publish', function(req, res) {
-    canvasArray = req.body.split(",")
-    
-    matrix.draw(canvasArray);
+app.post('/publish', function (req, res) {
+  canvasArray = req.body.split(",")
 
-    res.sendStatus(200);
+  if (matrix) {
+    matrix.draw(canvasArray);
+  }
+
+  res.sendStatus(200);
 });
 
 app.listen(port, () => {
