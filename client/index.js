@@ -1,36 +1,63 @@
 
 const express = require('express')
-const app = express()
-const port = 3000
 const bodyParser = require('body-parser')
-
-app.use(bodyParser.text());
-
 const path = require('path')
 
-const args = process.argv.slice(2);
-var matrix;
+const port = 3000
+const app = express()
+app.use(bodyParser.text());
+app.use(express.static(path.join(__dirname, 'public/PixelCraft')))
 
+// Initialize
+const args = process.argv.slice(2);
+
+var simulatorData;
+var matrix;
 if (!args[0] || args[0] != "dev") {
   const GlaumMatrix = require('./matrix.js')
   matrix = new GlaumMatrix()
 }
 
-
-
-app.use(express.static(path.join(__dirname, 'public/PixelCraft')))
-
+// Endpoints
 app.post('/publish', function (req, res) {
-  canvasArray = req.body.split(",")
+  if (req.body) {
+    if (matrix) {
+      canvasArray = req.body.split(",")
+      matrix.draw(canvasArray);
+    }
+    
+    publishToSimulator(req.body);
 
-  if (matrix) {
-    matrix.draw(canvasArray);
+    res.sendStatus(200);
+  } else {
+    console.log("Invalid body", req.body);
+    res.sendStatus(400);
   }
-
-  res.sendStatus(200);
 });
 
+var simulatorResponse;
+app.get('/simulator', async function (req, res) {
+  console.log('Got /simulator');
+  res.set({
+    'Cache-Control': 'no-cache',
+    'Content-Type': 'text/event-stream',
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Cache-Control, last-event-id'    
+  });
+  res.flushHeaders();
+
+  res.write('retry: 10000\n\n');
+  simulatorResponse = res;
+});
+
+function publishToSimulator(arrayData){
+  if (simulatorResponse){
+    simulatorResponse.write(`event: matrixUpdate\ndata: "${arrayData}"\n\n`);
+  }
+}
+
+// Setup app
 app.listen(port, () => {
   console.log(`Glaum Matrix Client listening at http://localhost:${port}`)
 })
-
