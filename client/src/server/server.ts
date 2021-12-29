@@ -21,11 +21,10 @@ app.use("/webfonts", express.static(path.join(__dirname, "web/PixelCraft/webfont
 const matrix = new GlaumMatrix();
 
 // Endpoints
-app.post("/publish", function (req, res) {
+app.post("/publish", async function (req, res) {
     if (req.body) {
-        console.log(req.body);
         if (req.body.gif) {
-            matrix.playGIF(req.body.payload);
+            await matrix.playGIF(req.body.payload);
         } else {
             matrix.draw(req.body.payload);
         }
@@ -51,15 +50,10 @@ app.get("/simulator", function (req, res) {
     res.write("retry: 10000\n\n");
 
     // Initialize the simulator matrix
-    let sent = function() {
-
-    }
     const simulatorMatrix = new SimulatorMatrix(function (data) {
-        res.write(`event: matrixUpdate\ndata: "${data}"\n\n`, function() {
-            console.log("Sent data.");
-        })
+        res.write(`event: matrixUpdate\ndata: "${data}"\n\n`);
     });
-    if (!simulatorAdded){
+    if (!simulatorAdded) {
         matrix.addOutput(simulatorMatrix);
         simulatorAdded = true;
     }
