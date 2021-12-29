@@ -20,21 +20,11 @@ export class GlaumMatrix {
         this.devices.forEach(device => device.show());
     }
 
-    public playGIF(filename) {
+    public playGIF(frames: [][]) {
         const delayTime = 1000;
-        const frames: Array<Array<string>> = [];
-        const content = GlaumMatrix.readFile(filename);
-        const rows = content.split("\n");
-
-        for (const row of rows) {
-            frames.push(row.split(","));
-        }
-
         while (true) {
-            let i;
-            for (i = 0; i < frames.length; i++) {
-                let j;
-                for (j = 0; j < frames[i].length; j++) {
+            for (var i = 0; i < frames.length; i++) {
+                for (var j = 0; j < frames[i].length; j++) {
                     if (frames[i][j]) {
                         this.devices.forEach(device => device.drawPixelFromHex(j, frames[i][j]));
                     }

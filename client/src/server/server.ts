@@ -36,7 +36,8 @@ app.post("/publish", function (req, res) {
     }
 });
 
-app.get("/simulator", async function (req, res) {
+let simulatorAdded = false;
+app.get("/simulator", function (req, res) {
     console.log("Got /simulator");
     res.set({
         Connection: "keep-alive",
@@ -50,10 +51,18 @@ app.get("/simulator", async function (req, res) {
     res.write("retry: 10000\n\n");
 
     // Initialize the simulator matrix
+    let sent = function() {
+
+    }
     const simulatorMatrix = new SimulatorMatrix(function (data) {
-        res.write(`event: matrixUpdate\ndata: "${data}"\n\n`);
+        res.write(`event: matrixUpdate\ndata: "${data}"\n\n`, function() {
+            console.log("Sent data.");
+        })
     });
-    matrix.addOutput(simulatorMatrix);
+    if (!simulatorAdded){
+        matrix.addOutput(simulatorMatrix);
+        simulatorAdded = true;
+    }
 });
 
 if (isPi()) {
