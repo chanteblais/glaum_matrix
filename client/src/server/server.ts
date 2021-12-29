@@ -9,6 +9,7 @@ const path = require("path");
 const port = process.env.PORT;
 const app = express();
 app.use(bodyParser.text());
+app.use(express.json());
 app.use("/", express.static(path.join(__dirname, "web/PixelCraft")));
 app.use("/lib", express.static(path.join(__dirname, "web/PixelCraft/lib")));
 app.use("/images", express.static(path.join(__dirname, "web/PixelCraft/images")));
@@ -22,9 +23,12 @@ const matrix = new GlaumMatrix();
 // Endpoints
 app.post("/publish", function (req, res) {
     if (req.body) {
-        const canvasArray = req.body.split(",");
-        matrix.draw(canvasArray);
-
+        console.log(req.body);
+        if (req.body.gif) {
+            matrix.playGIF(req.body.payload);
+        } else {
+            matrix.draw(req.body.payload);
+        }
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);
