@@ -1,4 +1,6 @@
 var ws281x = require('rpi-ws281x');
+const fs = require('fs');
+const { connect } = require('http2');
 
 class GlaumMatrix {
 
@@ -37,7 +39,7 @@ class GlaumMatrix {
         this.config.dma = 10;
 
         // Set full brightness, a value from 0 to 255 (default 255)
-        this.config.brightness = 255;
+        this.config.brightness = 120;
 
         // Set the GPIO number to communicate with the Neopixel strip (default 18)
         this.config.gpio = 18;
@@ -53,6 +55,14 @@ class GlaumMatrix {
 
         this.pixels = new Uint32Array(this.config.leds);
     }
+
+    sleep(milliseconds) {
+        const date = Date.now();
+        let currentDate = null;
+        do {
+          currentDate = Date.now();
+        } while (currentDate - date < milliseconds);
+      }
 
     matrixIndex(index) {
         return this.matrixArray[index]
@@ -72,6 +82,28 @@ class GlaumMatrix {
 
     }
 
+    writeFile(filename, content) {
+        fs.writeFileSync(`../gifs/${filename}.txt`, "")
+        for (var i = 0; i < content.length; i++) {
+            fs.appendFileSync(`../gifs/${filename}.txt`, content[i].toString()) 
+            // don't append newline at end of file
+            if (i < content.length -1) {
+                fs.appendFileSync(`../gifs/${filename}.txt`, "\n") 
+            }
+        }
+    }
+
+    readFile(filename) {
+        let data 
+        try {
+            data = fs.readFileSync(`../gifs/${filename}.txt`, 'utf8')
+          } catch (err) {
+            console.error(err)
+          }
+
+          return data
+    }
+
     draw(canvas) {
         for (var i = 0; i < canvas.length; i++ ) {
             if (canvas[i]) {
@@ -80,6 +112,35 @@ class GlaumMatrix {
         }
 
         ws281x.render(this.pixels);
+    }
+
+    playGIF(filename) {
+        let delayTime = 1000
+        let frames = new Array()
+        let content = this.readFile(filename)
+        let rows = content.split("\n")
+
+        for (const row of rows) {
+            frames.push(row.split(","))
+        }
+
+        while (true) {
+            for (var i = 0; i < frames.length; i++) {
+                for (var j = 0; j < frames[i].length; j++ ) {
+                    if (frames[i][j]) {
+                        this.drawPixelFromHex(this.matrixIndex(j), frames[i][j])
+                    }
+                }
+                if (j > frames[i].length) {
+                    j = 0
+                }
+                ws281x.render(this.pixels);
+                this.sleep(delayTime)
+            }
+            if (i > frames.length) {
+                i = 0
+            }
+        }
     }
 };
 
