@@ -16,9 +16,8 @@ const lint = !(argv["no-linting"] || argv.l === true);
 
 const config = [{
     entry: {
-        server: [
-            path.join(__dirname, "/src/server/server.ts")
-        ]
+        server: path.join(__dirname, "/src/server/server.ts"),
+        publisher: path.join(__dirname, "/src/server/publisher.ts")
     },
     mode: debug ? "development" : "production",
     output: {
