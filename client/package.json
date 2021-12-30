@@ -3,13 +3,10 @@
   "version": "1.0.0",
   "description": "Glaum Matrix Client",
   "scripts": {
-    "clean": "npx rimraf ./build/ && npx rimraf ./log/",
-    "prebuild": "npm run clean",
-    "build": "npx tsc",
-    "postbuild": "npx ts-node ./tools/build",
-    "prod": "node ./index.js",
-    "dev": "npx nodemon",
-    "test": "npx jest --findRelatedTests"
+    "start": "node dist/server.js",
+    "build": "gulp build",
+    "debug": "gulp serve --debug",
+    "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
     "body-parser": "^1.19.1",

@@ -1,10 +1,7 @@
-import { GlaumMatrix } from "./matrix";
-import { SimulatorMatrix } from "./simulatorMatrix";
-
-const isPi = require("detect-rpi");
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const { fork } = require("child_process");
 
 const port = process.env.PORT;
 const app = express();
@@ -17,17 +14,12 @@ app.use("/icons", express.static(path.join(__dirname, "web/PixelCraft/icons")));
 app.use("/css", express.static(path.join(__dirname, "web/PixelCraft/css")));
 app.use("/webfonts", express.static(path.join(__dirname, "web/PixelCraft/webfonts")));
 
-// Matrix
-const matrix = new GlaumMatrix();
+const publisher = fork(path.join(__dirname, "publisher.js"));
 
 // Endpoints
 app.post("/publish", async function (req, res) {
     if (req.body) {
-        if (req.body.gif) {
-            await matrix.playGIF(req.body.payload);
-        } else {
-            matrix.draw(req.body.payload);
-        }
+        // Write file here
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);
@@ -35,7 +27,6 @@ app.post("/publish", async function (req, res) {
     }
 });
 
-let simulatorAdded = false;
 app.get("/simulator", function (req, res) {
     console.log("Got /simulator");
     res.set({
@@ -50,21 +41,10 @@ app.get("/simulator", function (req, res) {
     res.write("retry: 10000\n\n");
 
     // Initialize the simulator matrix
-    const simulatorMatrix = new SimulatorMatrix(function (data) {
-        res.write(`event: matrixUpdate\ndata: "${data}"\n\n`);
+    publisher.on("message", (msg) => {
+        res.write(`event: matrixUpdate\ndata: "${msg.data}"\n\n`);
     });
-    if (!simulatorAdded) {
-        matrix.addOutput(simulatorMatrix);
-        simulatorAdded = true;
-    }
 });
-
-if (isPi()) {
-    console.log("This is a raspberry pie, starting real matrix.");
-    const RaspberryPiMatrix = require("./rpiMatrix");
-    const rpiMatrix = new RaspberryPiMatrix();
-    matrix.addOutput(rpiMatrix);
-}
 
 // Setup app
 app.listen(port, () => {
