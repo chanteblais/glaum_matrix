@@ -20,7 +20,7 @@ export class GlaumMatrix {
         this.devices.forEach(device => device.show());
     }
 
-    public async playGIF(frames: [][]) {
+    public async playGIF(frames: Array<Array<string>> ) {
         const delayTime = 1000;
         const gifPlays = 5;
         for (let g = 0; g < gifPlays; g++) {
@@ -41,6 +41,7 @@ export class GlaumMatrix {
             if (i > frames.length) {
                 i = 0;
             }
+            console.log(g)
         }
     }
 

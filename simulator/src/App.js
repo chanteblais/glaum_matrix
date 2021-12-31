@@ -83,7 +83,7 @@ class App extends Component {
       accessor: 'c10'
     }];
 
-    this.eventSource = new EventSource('http://localhost:3000/simulator');
+    this.eventSource = new EventSource('http://192.168.1.73:3000/simulator');
   }
 
   componentDidMount() {

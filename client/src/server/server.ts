@@ -1,3 +1,5 @@
+import { FileUtils } from "./fileUtils";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -19,7 +21,7 @@ const publisher = fork(path.join(__dirname, "publisher.js"));
 // Endpoints
 app.post("/publish", async function (req, res) {
     if (req.body) {
-        // Write file here
+        FileUtils.writeFile("mygif", req.body.payload);
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);
