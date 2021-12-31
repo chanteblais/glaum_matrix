@@ -48,6 +48,26 @@ app.get("/simulator", function (req, res) {
     });
 });
 
+app.get("/start", function (req, res) {
+    if (req.body) {
+        publisher.send("start")
+        res.sendStatus(200);
+    } else {
+        console.log("Invalid body", req.body);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/stop", function (req, res) {
+    if (req.body) {
+        publisher.send("stop")
+        res.sendStatus(200);
+    } else {
+        console.log("Invalid body", req.body);
+        res.sendStatus(400);
+    }
+});
+
 // Setup app
 app.listen(port, () => {
     console.log(`Glaum Matrix Client listening at http://localhost:${port}`);

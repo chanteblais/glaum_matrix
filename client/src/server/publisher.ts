@@ -18,31 +18,40 @@ if (isPi()) {
 }
 matrix.addOutput(simulatorMatrix);
 
-async function test() {
+let stop = false;
+process.on("message", (command) => {
+    console.log("Recevied command", command);
+    stop = command === "stop";
+})
+
+async function start() {
     while (true) {
-        // foreach file
-        var fileData: Array<Array<string>> = [];
-        var lines = FileUtils.readFile("mygif").split("\n");
-        lines.forEach(line => {
-            fileData.push(line.split(","))
-        });
-        const file = {
-            name: "mock",
-            blocked: false,
-            visible: true,
-            gif: true,
-            infinite: false,
-            data: fileData
-        };
+        while (!stop) {
+            // foreach file
+            const fileData: Array<Array<string>> = [];
+            const lines = (await FileUtils.readFile("mygif")).split("\n");
+            lines.forEach(line => {
+                fileData.push(line.split(","))
+            });
+            const file = {
+                name: "mock",
+                blocked: false,
+                visible: true,
+                gif: fileData.length > 1,
+                infinite: false,
+                data: fileData
+            };
             if (!file.blocked && file.visible) {
-                console.log("Playing file: " + file.name);
                 if (file.gif) {
                     await matrix.playGIF(file.data);
                 } else {
-                    matrix.draw(file.data);
+                    await matrix.draw(file.data);
                 }
             }
+        }
+        console.log("Process stopped. Sleeping for 10s before checking again...");
+        await new Promise(resolve => setTimeout(resolve, 10000));
     }
 }
 
-test();
+start();
