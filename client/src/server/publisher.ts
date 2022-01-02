@@ -22,22 +22,21 @@ let stop = false;
 process.on("message", (command) => {
     console.log("Recevied command", command);
     stop = command === "stop";
-})
+});
 
 async function start() {
     while (true) {
         while (!stop) {
-            // foreach file
             const fileData: Array<Array<string>> = [];
             const lines = (await FileUtils.readFile("mygif")).split("\n");
             lines.forEach(line => {
-                fileData.push(line.split(","))
+                fileData.push(line.split(","));
             });
             const file = {
                 name: "mock",
                 blocked: false,
                 visible: true,
-                gif: fileData.length > 1,
+                gif: lines.length > 1,
                 infinite: false,
                 data: fileData
             };

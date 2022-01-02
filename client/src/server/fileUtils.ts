@@ -14,11 +14,11 @@ export class FileUtils {
             for (let i = 0; i < content.length; i++) {
                 fs.appendFileSync(fd, content[i].toString());
                 if (i < content.length - 1) {
-                    fs.appendFileSync(fd, "\n")
+                    fs.appendFileSync(fd, "\n");
                 }
             }
         } catch (e) {
-            console.error("Error writing file", filename, e)
+            console.error("Error writing file", filename, e);
             throw e;
         } finally {
             if (fd) {
@@ -32,10 +32,10 @@ export class FileUtils {
     }
 
     public static async readFile(filename) {
-        let locked = this.locks.includes(filename)
+        let locked = this.locks.includes(filename);
         while (locked) {
             await new Promise(resolve => setTimeout(resolve, 500));
-            locked = this.locks.includes(filename)
+            locked = this.locks.includes(filename);
         }
 
         try {

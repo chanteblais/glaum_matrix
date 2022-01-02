@@ -50,7 +50,7 @@ app.get("/simulator", function (req, res) {
 
 app.get("/start", function (req, res) {
     if (req.body) {
-        publisher.send("start")
+        publisher.send("start");
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);
@@ -60,7 +60,7 @@ app.get("/start", function (req, res) {
 
 app.get("/stop", function (req, res) {
     if (req.body) {
-        publisher.send("stop")
+        publisher.send("stop");
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);

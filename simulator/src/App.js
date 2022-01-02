@@ -81,9 +81,21 @@ class App extends Component {
             accessor: 'c9'
         }, {
             accessor: 'c10'
+        }, {
+            accessor: 'c11'
+        }, {
+            accessor: 'c12'
+        }, {
+            accessor: 'c13'
+        }, {
+            accessor: 'c14'
+        }, {
+            accessor: 'c15'
+        }, {
+            accessor: 'c16'
         }];
 
-        this.eventSource = new EventSource('http://192.168.1.68:3000/simulator');
+        this.eventSource = new EventSource('http://localhost:3000/simulator');
     }
 
     componentDidMount() {
@@ -109,11 +121,11 @@ class App extends Component {
     updateMatrix(matrixValues) {
         if (matrixValues) {
             let values = matrixValues.split(",")
-            if (values.length === 100) {
-                let matrix = this.listToMatrix(values, 10);
+            if (values.length === 256) {
+                let matrix = this.listToMatrix(values, 16);
                 let newData = this.state.data.map((item) => {
                     let line = matrix[item.line];
-                    if (line && line.length === 10) {
+                    if (line && line.length === 16) {
                         item.c1 = line[0];
                         item.c2 = line[1];
                         item.c3 = line[2];
@@ -124,6 +136,12 @@ class App extends Component {
                         item.c8 = line[7];
                         item.c9 = line[8];
                         item.c10 = line[9];
+                        item.c11 = line[10];
+                        item.c12 = line[11];
+                        item.c13 = line[12];
+                        item.c14 = line[13];
+                        item.c15 = line[14];
+                        item.c16 = line[15];
                         return item;
                     }
                 });
