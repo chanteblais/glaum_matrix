@@ -8,7 +8,7 @@ const { fork } = require("child_process");
 const port = process.env.PORT;
 const app = express();
 app.use(bodyParser.text());
-app.use(express.json({limit: '10mb'}));
+app.use(express.json({ limit: "10mb" }));
 app.use("/", express.static(path.join(__dirname, "web/PixelCraft")));
 app.use("/lib", express.static(path.join(__dirname, "web/PixelCraft/lib")));
 app.use("/images", express.static(path.join(__dirname, "web/PixelCraft/images")));
