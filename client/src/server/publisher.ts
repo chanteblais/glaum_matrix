@@ -1,6 +1,7 @@
 // Matrix
 import { GlaumMatrix } from "./matrix";
 import { SimulatorMatrix } from "./simulatorMatrix";
+import { FileUtils } from "./fileUtils";
 
 const isPi = require("detect-rpi");
 
@@ -17,34 +18,39 @@ if (isPi()) {
 }
 matrix.addOutput(simulatorMatrix);
 
-async function test() {
+let stop = false;
+process.on("message", (command) => {
+    console.log("Recevied command", command);
+    stop = command === "stop";
+});
+
+async function start() {
     while (true) {
-        // TODO - Read files
-        const files: Array<any> = [];
-        const file = {
-            name: "mock",
-            blocked: false,
-            visible: true,
-            gif: true,
-            infinite: false,
-            data: []
-        };
-        // file.data[0] = ["#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff", "#ffffff"];
-        // file.data[1] = ["#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000", "#000000"];
-        files.push(file);
-        for (const file1 of files) {
-            if (!file1.blocked && file1.visible) {
-                console.log("Playing file: " + file1.name);
-                if (file1.gif) {
-                    await matrix.playGIF(file1.data);
+        while (!stop) {
+            const fileData: Array<Array<string>> = [];
+            const lines = (await FileUtils.readFile("mygif")).split("\n");
+            lines.forEach(line => {
+                fileData.push(line.split(","));
+            });
+            const file = {
+                name: "mock",
+                blocked: false,
+                visible: true,
+                gif: lines.length > 1,
+                infinite: false,
+                data: fileData
+            };
+            if (!file.blocked && file.visible) {
+                if (file.gif) {
+                    await matrix.playGIF(file.data);
                 } else {
-                    matrix.draw(file1.data);
+                    await matrix.draw(file.data);
                 }
             }
-            // Sleep until next file
-            await new Promise(resolve => setTimeout(resolve, 5000));
         }
+        console.log("Process stopped. Sleeping for 10s before checking again...");
+        await new Promise(resolve => setTimeout(resolve, 10000));
     }
 }
 
-test();
+start();

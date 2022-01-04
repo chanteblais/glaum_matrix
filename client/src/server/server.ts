@@ -1,3 +1,5 @@
+import { FileUtils } from "./fileUtils";
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -6,7 +8,7 @@ const { fork } = require("child_process");
 const port = process.env.PORT;
 const app = express();
 app.use(bodyParser.text());
-app.use(express.json());
+app.use(express.json({limit: '10mb'}));
 app.use("/", express.static(path.join(__dirname, "web/PixelCraft")));
 app.use("/lib", express.static(path.join(__dirname, "web/PixelCraft/lib")));
 app.use("/images", express.static(path.join(__dirname, "web/PixelCraft/images")));
@@ -19,7 +21,7 @@ const publisher = fork(path.join(__dirname, "publisher.js"));
 // Endpoints
 app.post("/publish", async function (req, res) {
     if (req.body) {
-        // Write file here
+        FileUtils.writeFile("mygif", req.body.payload);
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);
@@ -44,6 +46,26 @@ app.get("/simulator", function (req, res) {
     publisher.on("message", (msg) => {
         res.write(`event: matrixUpdate\ndata: "${msg.data}"\n\n`);
     });
+});
+
+app.get("/start", function (req, res) {
+    if (req.body) {
+        publisher.send("start");
+        res.sendStatus(200);
+    } else {
+        console.log("Invalid body", req.body);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/stop", function (req, res) {
+    if (req.body) {
+        publisher.send("stop");
+        res.sendStatus(200);
+    } else {
+        console.log("Invalid body", req.body);
+        res.sendStatus(400);
+    }
 });
 
 // Setup app

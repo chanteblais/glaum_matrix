@@ -1,7 +1,5 @@
 import { Device } from "./device";
 
-const fs = require("fs");
-
 export class GlaumMatrix {
 
     private devices: Array<Device> = [];
@@ -10,7 +8,7 @@ export class GlaumMatrix {
         this.devices.push(output);
     }
 
-    public draw(pixelArray) {
+    public async draw(pixelArray) {
         for (let i = 0; i < pixelArray.length; i++) {
             if (pixelArray[i]) {
                 this.devices.forEach(device => device.drawPixelFromHex(i, pixelArray[i]));
@@ -18,10 +16,11 @@ export class GlaumMatrix {
         }
 
         this.devices.forEach(device => device.show());
+        await new Promise(resolve => setTimeout(resolve, 10));
     }
 
-    public async playGIF(frames: [][]) {
-        const delayTime = 1000;
+    public async playGIF(frames: Array<Array<string>>) {
+        const delayTime = 50;
         const gifPlays = 5;
         for (let g = 0; g < gifPlays; g++) {
             let i;
@@ -42,27 +41,5 @@ export class GlaumMatrix {
                 i = 0;
             }
         }
-    }
-
-    private static writeFile(filename, content) {
-        fs.writeFileSync(`../gifs/${filename}.txt`, "");
-        for (let i = 0; i < content.length; i++) {
-            fs.appendFileSync(`../gifs/${filename}.txt`, content[i].toString());
-            // don"t append newline at end of file
-            if (i < content.length - 1) {
-                fs.appendFileSync(`../gifs/${filename}.txt`, "\n");
-            }
-        }
-    }
-
-    private static readFile(filename) {
-        let data;
-        try {
-            data = fs.readFileSync(`../gifs/${filename}.txt`, "utf8");
-        } catch (err) {
-            console.error(err);
-        }
-
-        return data;
     }
 }
