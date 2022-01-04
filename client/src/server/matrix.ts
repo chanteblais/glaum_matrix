@@ -20,7 +20,7 @@ export class GlaumMatrix {
     }
 
     public async playGIF(frames: Array<Array<string>>) {
-        const delayTime = 1000;
+        const delayTime = 50;
         const gifPlays = 5;
         for (let g = 0; g < gifPlays; g++) {
             let i;
