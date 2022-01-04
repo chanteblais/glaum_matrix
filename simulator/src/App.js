@@ -1,5 +1,4 @@
-import React, {Component} from 'react';
-import {getInitialFlightData} from './DataProvider';
+import React, {Component} from "react";
 import {useTable} from "react-table";
 
 const defaultPropGetter = () => ({});
@@ -7,7 +6,6 @@ const defaultPropGetter = () => ({});
 function Table({
                    columns,
                    data,
-                   getHeaderProps = defaultPropGetter,
                    getColumnProps = defaultPropGetter,
                    getRowProps = defaultPropGetter,
                    getCellProps = defaultPropGetter
@@ -15,7 +13,6 @@ function Table({
     const {
         getTableProps,
         getTableBodyProps,
-        headerGroups,
         rows,
         prepareRow
     } = useTable({
@@ -53,99 +50,69 @@ function Table({
 }
 
 class App extends Component {
+
+    matrixSize = 16;
+
     constructor(props) {
         super(props);
         this.state = {
-            data: getInitialFlightData()
+            data: this.getInitialFlightData(this.matrixSize)
         };
 
         this.columns = [{
-            accessor: 'line'
-        }, {
-            accessor: 'c1'
-        }, {
-            accessor: 'c2'
-        }, {
-            accessor: 'c3'
-        }, {
-            accessor: 'c4'
-        }, {
-            accessor: 'c5'
-        }, {
-            accessor: 'c6'
-        }, {
-            accessor: 'c7'
-        }, {
-            accessor: 'c8'
-        }, {
-            accessor: 'c9'
-        }, {
-            accessor: 'c10'
-        }, {
-            accessor: 'c11'
-        }, {
-            accessor: 'c12'
-        }, {
-            accessor: 'c13'
-        }, {
-            accessor: 'c14'
-        }, {
-            accessor: 'c15'
-        }, {
-            accessor: 'c16'
+            accessor: "line"
         }];
 
-        this.eventSource = new EventSource('http://localhost:3000/simulator');
+        for (let i = 0; i < this.matrixSize; i++) {
+            this.columns.push({accessor: "c" + i});
+        }
+        this.eventSource = new EventSource("http://localhost:3000/simulator");
+    }
+
+    getInitialFlightData(matrixSize) {
+        let data = [];
+        for (let i = 0; i < matrixSize; i++) {
+            let line = {
+                line: i
+            };
+            for (let j = 0; j < matrixSize; j++) {
+                line["c" + j] = "#000000";
+            }
+            data.push(line);
+        }
+        return data;
     }
 
     componentDidMount() {
-        this.eventSource.addEventListener('matrixUpdate', (e) => this.updateMatrix(JSON.parse(e.data)));
-        this.eventSource.addEventListener('closedConnection', () => this.stopUpdates());
+        this.eventSource.addEventListener("matrixUpdate", (e) => this.updateMatrix(JSON.parse(e.data)));
     }
 
     listToMatrix(list, elementsPerSubArray) {
-        var matrix = [], i, k;
-
+        let matrix = [], i, k;
         for (i = 0, k = -1; i < list.length; i++) {
             if (i % elementsPerSubArray === 0) {
                 k++;
                 matrix[k] = [];
             }
-
             matrix[k].push(list[i]);
         }
-
         return matrix;
     }
 
     updateMatrix(matrixValues) {
         if (matrixValues) {
-            let values = matrixValues.split(",")
-            if (values.length === 256) {
-                let matrix = this.listToMatrix(values, 16);
+            let values = matrixValues.split(",");
+            if (values.length === this.matrixSize * this.matrixSize) {
+                let matrix = this.listToMatrix(values, this.matrixSize);
                 let newData = this.state.data.map((item) => {
                     let line = matrix[item.line];
-                    if (line && line.length === 16) {
-                        item.c1 = line[0];
-                        item.c2 = line[1];
-                        item.c3 = line[2];
-                        item.c4 = line[3];
-                        item.c5 = line[4];
-                        item.c6 = line[5];
-                        item.c7 = line[6];
-                        item.c8 = line[7];
-                        item.c9 = line[8];
-                        item.c10 = line[9];
-                        item.c11 = line[10];
-                        item.c12 = line[11];
-                        item.c13 = line[12];
-                        item.c14 = line[13];
-                        item.c15 = line[14];
-                        item.c16 = line[15];
+                    if (line && line.length === this.matrixSize) {
+                        for (let i = 0; i < line.length; i++) {
+                            item["c" + i] = line[i];
+                        }
                         return item;
                     }
                 });
-
                 this.setState(Object.assign({}, {data: newData}));
             }
         }
