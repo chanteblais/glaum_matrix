@@ -8,13 +8,13 @@ const { fork } = require("child_process");
 const port = process.env.PORT;
 const app = express();
 app.use(bodyParser.text());
-app.use(express.json({limit: '10mb'}));
-app.use("/", express.static(path.join(__dirname, "web/PixelCraft")));
-app.use("/lib", express.static(path.join(__dirname, "web/PixelCraft/lib")));
-app.use("/images", express.static(path.join(__dirname, "web/PixelCraft/images")));
-app.use("/icons", express.static(path.join(__dirname, "web/PixelCraft/icons")));
-app.use("/css", express.static(path.join(__dirname, "web/PixelCraft/css")));
-app.use("/webfonts", express.static(path.join(__dirname, "web/PixelCraft/webfonts")));
+app.use(express.json({ limit: "10mb" }));
+app.use("/", express.static(path.join(__dirname, "web/editor")));
+app.use("/lib", express.static(path.join(__dirname, "web/editor/lib")));
+app.use("/images", express.static(path.join(__dirname, "web/editor/images")));
+app.use("/icons", express.static(path.join(__dirname, "web/editor/icons")));
+app.use("/css", express.static(path.join(__dirname, "web/editor/css")));
+app.use("/webfonts", express.static(path.join(__dirname, "web/editor/webfonts")));
 
 const publisher = fork(path.join(__dirname, "publisher.js"));
 

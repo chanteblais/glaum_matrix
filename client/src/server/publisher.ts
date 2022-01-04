@@ -1,32 +1,38 @@
-// Matrix
 import { GlaumMatrix } from "./matrix";
 import { SimulatorMatrix } from "./simulatorMatrix";
 import { FileUtils } from "./fileUtils";
 
-const isPi = require("detect-rpi");
+class Publisher {
 
-const matrix = new GlaumMatrix();
-const simulatorMatrix = new SimulatorMatrix(function (data) {
-    // @ts-ignore
-    process.send({ data });
-});
-if (isPi()) {
-    console.log("This is a raspberry pie, starting real matrix.");
-    const RaspberryPiMatrix = require("./rpiMatrix");
-    const rpiMatrix = new RaspberryPiMatrix();
-    matrix.addOutput(rpiMatrix);
-}
-matrix.addOutput(simulatorMatrix);
+    private readonly interval: number = 50;
+    private readonly matrix: GlaumMatrix;
+    private readonly simulatorMatrix: SimulatorMatrix;
+    private stop: boolean = false;
 
-let stop = false;
-process.on("message", (command) => {
-    console.log("Recevied command", command);
-    stop = command === "stop";
-});
+    constructor() {
+        this.matrix = new GlaumMatrix();
+        this.simulatorMatrix = new SimulatorMatrix(function (data) {
+            // @ts-ignore
+            process.send({ data });
+        });
+        this.matrix.addOutput(this.simulatorMatrix);
+        // Check if rpi
+        if (require("detect-rpi")()) {
+            console.log("This is a raspberry pie, starting real matrix.");
+            const RaspberryPiMatrix = require("./rpiMatrix");
+            const rpiMatrix = new RaspberryPiMatrix();
+            this.matrix.addOutput(rpiMatrix);
+        }
+        // Check from messages from parent
+        this.stop = false;
+        process.on("message", (command) => {
+            console.log("Recevied command", command);
+            this.stop = command === "stop";
+        });
+    }
 
-async function start() {
-    while (true) {
-        while (!stop) {
+    async loop() {
+        if (!this.stop) {
             const fileData: Array<Array<string>> = [];
             const lines = (await FileUtils.readFile("mygif")).split("\n");
             lines.forEach(line => {
@@ -42,15 +48,21 @@ async function start() {
             };
             if (!file.blocked && file.visible) {
                 if (file.gif) {
-                    await matrix.playGIF(file.data);
+                    await this.matrix.playGIF(file.data);
                 } else {
-                    await matrix.draw(file.data);
+                    await this.matrix.draw(file.data);
                 }
             }
+        } else {
+            console.log("Publisher is stopped. Will check again in", this.interval, "seconds");
         }
-        console.log("Process stopped. Sleeping for 10s before checking again...");
-        await new Promise(resolve => setTimeout(resolve, 10000));
+    }
+
+    run() {
+        // Loop every 100 ms
+        setInterval(this.loop.bind(this), this.interval);
     }
 }
 
-start();
+const publisher = new Publisher();
+publisher.run();
