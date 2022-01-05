@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<!-- saved from url=(0147)https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/ -->
+<html class="html" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings</title>
+<link rel="pingback" href="https://gremaudpi.emf-informatique.ch/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Technical wanderings » Feed" href="https://gremaudpi.emf-informatique.ch/feed/">
+<link rel="alternate" type="application/rss+xml" title="Technical wanderings » Comments Feed" href="https://gremaudpi.emf-informatique.ch/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Technical wanderings » Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server Comments Feed" href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/gremaudpi.emf-informatique.ch\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.5"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-theme-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/theme.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/all.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/simple-line-icons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="magnific-popup-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/magnific-popup.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="slick-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/slick.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/style.min(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="oceanwp-google-font-lato-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/widgets.css" type="text/css" media="all">
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/jquery.js"></script><link href="chrome-extension://idpbkophnbfijcnlffdmmppgnncgappc/css/content.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/jquery-migrate.min.js"></script>
+<link rel="https://api.w.org/" href="https://gremaudpi.emf-informatique.ch/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://gremaudpi.emf-informatique.ch/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://gremaudpi.emf-informatique.ch/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli" href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/">
+<link rel="next" title="Install Cacti 0.8.8f and Weathermap plugin 0.98a on Ubuntu 16.04" href="https://gremaudpi.emf-informatique.ch/install-cacti-0-8-8f-and-weathermap-plugin-0-98a-on-ubuntu-16-04/">
+<meta name="generator" content="WordPress 5.2.5">
+<link rel="canonical" href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/">
+<link rel="shortlink" href="https://gremaudpi.emf-informatique.ch/?p=2041">
+<link rel="alternate" type="application/json+oembed" href="https://gremaudpi.emf-informatique.ch/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fgremaudpi.emf-informatique.ch%2Fhow-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://gremaudpi.emf-informatique.ch/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fgremaudpi.emf-informatique.ch%2Fhow-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt%2F&amp;format=xml">
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<!-- OceanWP CSS -->
+<style type="text/css">
+/* Header CSS */#site-header,.has-transparent-header .is-sticky #site-header,.has-vh-transparent .is-sticky #site-header.vertical-header,#searchform-header-replace{background-color:#0083ef}#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}#site-logo a.site-logo-text{color:#ffffff}#site-logo a.site-logo-text:hover{color:#d1ecff}#site-navigation-wrap .dropdown-menu >li >a,.oceanwp-mobile-menu-icon a,#searchform-header-replace-close{color:#ffffff}#site-navigation-wrap .dropdown-menu >li >a:hover,.oceanwp-mobile-menu-icon a:hover,#searchform-header-replace-close:hover{color:#d1ecff}#site-navigation-wrap .dropdown-menu >.current-menu-item >a,#site-navigation-wrap .dropdown-menu >.current-menu-ancestor >a,#site-navigation-wrap .dropdown-menu >.current-menu-item >a:hover,#site-navigation-wrap .dropdown-menu >.current-menu-ancestor >a:hover{color:#d1ecff}/* Typography CSS */body{font-family:Lato;font-size:18px;color:#000000}h1,h2,h3,h4,h5,h6,.theme-heading,.widget-title,.oceanwp-widget-recent-posts-title,.comment-reply-title,.entry-title,.sidebar-box .widget-title{font-family:Lato;color:#000000}h1{font-size:36px;color:#000000;line-height:1}h2{font-size:30px;color:#000000;line-height:1}h3{font-size:24px;color:#000000;line-height:1}h4{font-size:18px;color:#000000}#site-logo a.site-logo-text{font-family:Lato}#site-navigation-wrap .dropdown-menu >li >a,#site-header.full_screen-header .fs-dropdown-menu >li >a,#site-header.top-header #site-navigation-wrap .dropdown-menu >li >a,#site-header.center-header #site-navigation-wrap .dropdown-menu >li >a,#site-header.medium-header #site-navigation-wrap .dropdown-menu >li >a,.oceanwp-mobile-menu-icon a{font-size:15px;letter-spacing:1px}.page-header .page-header-title,.page-header.background-image-page-header .page-header-title{line-height:1}.blog-entry.post .blog-entry-header .entry-title a{font-size:36px;color:#000000;line-height:1}.single-post .entry-title{font-size:40px;color:#000000;line-height:1}
+</style><style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style></head>
+
+<body class="post-template-default single single-post postid-2041 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile no-header-border default-breakpoint has-sidebar content-right-sidebar post-in-category-sysint has-breadcrumbs elementor-default elementor-kit-3173" itemscope="itemscope" itemtype="https://schema.org/Article" style="">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="minimal-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+					
+			<div id="site-header-inner" class="clr container">
+
+				
+				
+
+<div id="site-logo" class="clr" itemscope="" itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="https://gremaudpi.emf-informatique.ch/" rel="home" class="site-title site-logo-text">Technical wanderings</a>
+				
+	</div><!-- #site-logo-inner -->
+
+	
+	
+</div><!-- #site-logo -->
+
+			<div id="site-navigation-wrap" class="clr">
+			
+			
+			
+			<nav id="site-navigation" class="navigation main-navigation clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement" role="navigation">
+
+				<ul id="menu-main" class="main-menu dropdown-menu sf-menu sf-js-enabled" style="touch-action: pan-y;"><li id="menu-item-17" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-17"><a href="https://gremaudpi.emf-informatique.ch/" class="menu-link"><span class="text-wrap">Home</span></a></li><li id="menu-item-121" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-121"><a href="https://gremaudpi.emf-informatique.ch/blog/" class="menu-link"><span class="text-wrap">Blog</span></a></li><li id="menu-item-18" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18"><a href="https://gremaudpi.emf-informatique.ch/contact/" class="menu-link"><span class="text-wrap">Contact</span></a></li><li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="https://gremaudpi.emf-informatique.ch/about/" class="menu-link"><span class="text-wrap">About</span></a></li><li id="menu-item-3182" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3182"><a href="https://gremaudpi.emf-informatique.ch/donation/" class="menu-link"><span class="text-wrap">Donation</span></a></li></ul>
+			</nav><!-- #site-navigation -->
+
+			
+			
+					</div><!-- #site-navigation-wrap -->
+			
+		
+	
+				
+	<div class="oceanwp-mobile-menu-icon clr mobile-right">
+
+		
+		
+		
+		<a href="javascript:void(0)" class="mobile-menu" aria-label="Mobile Menu">
+							<i class="fa fa-bars" aria-hidden="true"></i>
+								<span class="oceanwp-text">Menu</span>
+				<span class="oceanwp-close-text">Close</span>
+						</a>
+
+		
+		
+		
+	</div><!-- #oceanwp-mobile-menu-navbar -->
+
+
+			</div><!-- #site-header-inner -->
+
+			
+<div id="mobile-dropdown" class="clr" style="">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<ul id="menu-main-1" class="menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-17"><a href="https://gremaudpi.emf-informatique.ch/">Home</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-121"><a href="https://gremaudpi.emf-informatique.ch/blog/">Blog</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18"><a href="https://gremaudpi.emf-informatique.ch/contact/">Contact</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="https://gremaudpi.emf-informatique.ch/about/">About</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3182"><a href="https://gremaudpi.emf-informatique.ch/donation/">Donation</a></li>
+</ul>
+<div id="mobile-menu-search" class="clr">
+	<form method="get" action="https://gremaudpi.emf-informatique.ch/" class="mobile-searchform" role="search" aria-label="Search for:">
+		<label for="ocean-mobile-search1">
+			<input type="search" name="s" autocomplete="off" placeholder="Search">
+			<button type="submit" class="searchform-submit" aria-label="Submit search">
+				<i class="icon-magnifier" aria-hidden="true"></i>
+			</button>
+					</label>
+			</form>
+</div><!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+			
+			
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+
+<header class="page-header">
+
+	
+	<div class="container clr page-header-inner">
+
+		
+			<h1 class="page-header-title clr" itemprop="headline">Blog</h1>
+
+			
+		
+		<nav aria-label="Breadcrumbs" class="site-breadcrumbs clr position-" itemprop="breadcrumb"><ol class="trail-items" itemscope="" itemtype="http://schema.org/BreadcrumbList"><meta name="numberOfItems" content="3"><meta name="itemListOrder" content="Ascending"><li class="trail-item trail-begin" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://gremaudpi.emf-informatique.ch/" rel="home" aria-label="Home" itemtype="https://schema.org/Thing" itemprop="item"><span itemprop="name"><span class="icon-home" aria-hidden="true"></span><span class="breadcrumb-home has-icon">Home</span></span></a><span class="breadcrumb-sep">&gt;</span><meta content="1" itemprop="position"></li><li class="trail-item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://gremaudpi.emf-informatique.ch/category/sysint/" itemtype="https://schema.org/Thing" itemprop="item"><span itemprop="name">System Integration</span></a><span class="breadcrumb-sep">&gt;</span><meta content="2" itemprop="position"></li><li class="trail-item trail-end" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/" itemtype="https://schema.org/Thing" itemprop="item"><span itemprop="name">Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server</span></a><meta content="3" itemprop="position"></li></ol></nav>
+	</div><!-- .page-header-inner -->
+
+	
+	
+</header><!-- .page-header -->
+
+
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-2041">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server</h2><!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name"><span class="screen-reader-text">Post author:</span><i class="icon-user" aria-hidden="true"></i><a href="https://gremaudpi.emf-informatique.ch/author/admin/" title="Posts by admin" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">admin</a></li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished"><span class="screen-reader-text">Post published:</span><i class="icon-clock" aria-hidden="true"></i>4 January 2019</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat"><span class="screen-reader-text">Post category:</span><i class="icon-folder" aria-hidden="true"></i><a href="https://gremaudpi.emf-informatique.ch/category/sysint/" rel="category tag">System Integration</a></li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments"><span class="screen-reader-text">Post comments:</span><i class="icon-bubble" aria-hidden="true"></i><a href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/#respond" class="comments-link">0 Comments</a></li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+	<p>In this article, I will explain how to configure a standalone captive portal on a Raspberry Pi. The Raspberry Pi will run OpenWrt and will use following components to fulfill our needs:
+</p>
+<ul>
+<li>Coova-Chilli (the captive portal)
+</li>
+<li>Uhttpd (hosting the splash page and OpenWrt web management (LUCI))
+</li>
+<li>Freeradius (the authenticator)
+</li>
+</ul>
+<h1>Schema<br>
+</h1>
+<p>The following schema shows the actors in presence. Notice that the management workstation is just used for configuration and can be removed once the configuration is completed.
+</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR1.png" alt="">
+	</p>
+<h1>Prerequisite<br>
+</h1>
+<p>The prerequisite for this installation is to configure the Rapberry Pi as a routed Access Point as described in my previous post available under this link: <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/">https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/</a>
+	</p>
+<p>Once this is done, you should have a Raspberry Pi running OpenWrt and configured as a routed Access Point. The SSID visible to the visitors will be "Guest", but you can rename it easily as you want.
+</p>
+<p><strong>WARNING :</strong> be aware that Chilli will create a tunnel (tun0) on the wlan0 interface of the Raspi.
+</p>
+<p>Next, install the local splash page as described in my previous post available under this link: <a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/">https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/</a>
+	</p>
+<p>Once this is done, the people connecting to your hostspot will be presented a splash page where they can log on. In this article, we will mainly focus on installing Freeradius on the Raspberry Pi in order to authenticate our users
+</p>
+<h1>Install Freeradius<br>
+</h1>
+<p>Coova-Chilli only supports PAP encryption protocol when used with Freeradius. This could be a problem if we used an external radius server, the password being transmitted in clear over the network. In our particular case, however, this is not a problem, because we will use a local radius server and the passwords will not be sent over the network.
+</p>
+<p>The following configuration is mainly based on the following article: <a href="https://tmikey.tech/tech_daily/2018/08/23/openwrt_freeradius3.html">https://tmikey.tech/tech_daily/2018/08/23/openwrt_freeradius3.html</a>
+	</p>
+<h2>Install packages<br>
+</h2>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt; background-color:#eeeeff">opkg install freeradius3 freeradius3-common<br>
+</span></p>
+<h2>Install tunnels<br>
+</h2>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt; background-color:#eeeeff">opkg install freeradius3-mod-pap<br>
+</span></p>
+<h2>Install modules<br>
+</h2>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt; background-color:#eeeeff">opkg install freeradius3-mod-preprocess freeradius3-mod-files freeradius3-mod-radutmp freeradius3-mod-attr-filter<br>
+</span></p>
+<h2>Replace mini-wpad with wpad<br>
+</h2>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt; background-color:#eeeeff">opkg remove wpad-mini; opkg install wpad<br>
+</span></p>
+<h2>Configure FreeRadius<br>
+</h2>
+<p>Create a new site in directory /etc/freeradius3/sites-available
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">nano /etc/freeradius3/sites-available/lede<br>
+</span></p>
+<p>And insert following code in it
+</p>
+<p style="background: #fbe4d5"><span style="font-family:Consolas; font-size:12pt">server lede {<br>&nbsp;&nbsp;&nbsp;&nbsp;listen {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type = auth<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipaddr = *<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port = 1812<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_connections = 16<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle_timeout = 30<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;listen {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type = auth<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6addr = ::&nbsp;&nbsp;&nbsp;&nbsp;# any.  ::1 == localhost<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_connections = 16<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lifetime = 0<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;idle_timeout = 30<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;authorize {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#preprocess<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pap<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;authenticate {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auth-Type PAP {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pap<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br>
+</span></p>
+<p>Create a new inner tunnel in directory /etc/freeradius3/sites-available
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">nano /etc/freeradius3/sites-available/lede-inner-tunnel<br>
+</span></p>
+<p>And insert following code in it
+</p>
+<p style="background: #fbe4d5"><span style="font-family:Consolas; font-size:12pt">server inner-tunnel {<br>&nbsp;&nbsp;&nbsp;&nbsp;listen {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipaddr = 127.0.0.1<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port = 18120<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type = auth<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;authorize {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;files<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pap<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;authenticate {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Auth-Type PAP {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pap<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;session {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;radutmp<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;post-auth {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Post-Auth-Type REJECT {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attr_filter.access_reject<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}<br>}<br>
+</span></p>
+<p>Delete the default symlinks and create new ones in directory /etc/freeradius3/sites-enabled
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">rm /etc/freeradius3/sites-enabled/*<br>
+</span></p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">ln -s /etc/freeradius3/sites-available/lede /etc/freeradius3/sites-enabled/<br>
+</span></p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">ln -s /etc/freeradius3/sites-available/lede-inner-tunnel /etc/freeradius3/sites-enabled/<br>
+</span></p>
+<h2>Define users<br>
+</h2>
+<p>Add your visitor name/passwords by editing following file
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">nano /etc/freeradius3/mods-config/files/authorize<br>
+</span></p>
+<p>Add your users as the example bellow for "bob"
+</p>
+<p style="background: #fbe4d5"><span style="font-family:Consolas; font-size:12pt">#<br># The canonical testing user which is in most of the<br># examples.<br>#<br>bob     Cleartext-Password := "hello"<br>#       Reply-Message := "Hello, %{User-Name}"<br>
+</span></p>
+<h1>Debug configurations<br>
+</h1>
+<p>Now you can debug your server configuration in verbose mode
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt; background-color:#eeeeff">radiusd -X<br>
+</span></p>
+<p>Output should be something like
+</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR2.png" alt="">
+	</p>
+<p>If you want to test your configuration from the management workstation, you should use something like NTRadPing (on windows) or radtest (on Linux). Be sure to introduce your workstation IP address in the clients.conf file of freeradius by editing following file:
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">nano /etc/freeradius3/clients.conf<br>
+</span></p>
+<p>And add something like ("ipaddr" should be the Ip address of your management workstation)
+</p>
+<p style="background: #fbe4d5"><span style="font-family:Consolas; font-size:12pt">client management {<br>&nbsp;&nbsp;&nbsp;&nbsp;ipaddr = 192.168.0.34<br>&nbsp;&nbsp;&nbsp;&nbsp;secret = testing123<br>}<br>
+</span></p>
+<p>Below is a printscreen of NTRadPing
+</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR3.png" alt="">
+	</p>
+<p>And the same test made with radtest
+</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR4.png" alt="">
+	</p>
+<p>On the raspberry pi console, you should see something like:
+</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR5.png" alt="">
+	</p>
+<p>If it's okay, exit with ctrl-c and enable radiusd to survive reboot
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">/etc/init.d/radiusd enable<br>
+</span></p>
+<p>And start the service
+</p>
+<p style="background: #e7e6e6"><span style="font-family:Consolas; font-size:12pt">/etc/init.d/radiusd start<br>
+</span></p>
+<h1>Configure coova-chilli<br>
+</h1>
+<p>Modify the chilli configuration
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">nano /etc/config/chilli<br>
+</span></p>
+<p>Modify the radius parameters to access the local radius server</p>
+<table style="border-collapse:collapse" border="0">
+<colgroup>
+<col style="width:17px">
+<col style="width:609px"></colgroup>
+<tbody valign="top">
+<tr>
+<td style="background: #ed7d31; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  solid 0.5pt; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">&nbsp;</td>
+<td style="background: #fbe4d5; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  none; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">
+<p><span style="font-family:Consolas; font-size:12pt">#<br># Sample Coova-Chilli configuration file modified by gremaudpi<br>#</span></p>
+<p>config chilli</p>
+<p>    option interval 3600<br>    option swapoctets 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>    ######## TUN and DHCP Parameters ########<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>    option tundev 'tun0'<br>    option dhcpif 'wlan0'<br>    option net 192.168.182.0/24<br>    option lease 600<br>    option dns1 8.8.8.8<br>    option dns2 8.8.4.4<br>    option ipup '/etc/chilli/up.sh'<br>    option ipdown '/etc/chilli/down.sh'</p>
+<p>    ######## Radius parameters ########</p>
+<p>								<span style="background-color:yellow">option radiusserver1 '127.0.0.1'</span><br>    option radiusserver2 ''<br>    option radiusauthport 1812<br>    option radiusacctport 1813<br>
+								<span style="background-color:yellow">option radiussecret 'testing123'</span><br>    option radiusnasid 'ap001'<br>    option ssid 'ACME-company'</p>
+<p>    ######## Universal access method (UAM) parameters ########</p>
+<p>    option uamlisten 192.168.182.1<br>    option uamserver 'http://192.168.0.30/hotspotlogin/hotspotlogin.php'<br>    option uamsecret 'greatsecret'<br>    option uamallowed ''<br>    option uamdomain ''<br>    option uamanydns 1<br>    option uamaliasname 'login'<br>    option nouamsuccess 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Restart chilli
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt; background-color:#e7e6e6">/etc/init.d/chilli restart<br>
+</span></p>
+<p>You should now be able to log on to your captive portal with bob/hello
+</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR6.png" alt="">
+		</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR7.png" alt="">
+		</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR8.png" alt="">
+		</p>
+<p><img src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/110419_1619_ConfigureaR9.png" alt="">
+		</p>
+<p>
+&nbsp;</p><p></p>
+
+</div><!-- .entry -->
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="https://gremaudpi.emf-informatique.ch/tag/access-point/" rel="tag">access point</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/captive-portal/" rel="tag">captive portal</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/chilli/" rel="tag">chilli</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/coova-chilli/" rel="tag">coova-chilli</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/openwrt/" rel="tag">openwrt</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/radius/" rel="tag">Radius</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/rapberry/" rel="tag">rapberry</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/raspberry-pi/" rel="tag">raspberry pi</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/wifi/" rel="tag">WiFi</a></div>
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://gremaudpi.emf-informatique.ch/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<div class="comment-textarea"><label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea></div><div class="comment-form-author"><label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name"></div>
+<div class="comment-form-email"><label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email"></div>
+<div class="comment-form-url"><label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website"></div>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="2041" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>			</form>
+			</div><!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div><!-- #content -->
+
+			
+		</div><!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		<div id="search-2" class="sidebar-box widget_search clr">
+<form role="search" method="get" class="searchform" action="https://gremaudpi.emf-informatique.ch/">
+	<label for="ocean-search-form-2">
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" id="ocean-search-form-2" class="field" autocomplete="off" placeholder="Search" name="s">
+			</label>
+	</form>
+</div>		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">		<h4 class="widget-title">Recent Posts</h4>		<ul>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/install-cacti-0-8-8f-and-weathermap-plugin-0-98a-on-ubuntu-16-04/">Install Cacti 0.8.8f and Weathermap plugin 0.98a on Ubuntu 16.04</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/">Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/">Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/configure-a-raspberry-pi-running-openwrt-and-coova-chilli-captive-portal-to-authenticate-visitors-to-active-directory/">Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to Active Directory</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-radiusdesk-and-coova-chilli-on-raspberry-pi-running-openwrt/">How to build a captive portal with Radiusdesk and Coova-chilli on Raspberry Pi running OpenWrt</a>
+									</li>
+					</ul>
+		</div><div id="recent-comments-2" class="sidebar-box widget_recent_comments clr"><h4 class="widget-title">Recent Comments</h4><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Diego</span> on <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/#comment-1161">Create a routed Access Point with Raspberry Pi and OpenWrt</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://www.deposaja.com/" rel="external nofollow" class="url">Meagan Quong</a></span> on <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/#comment-1142">Create a routed Access Point with Raspberry Pi and OpenWrt</a></li><li class="recentcomments"><span class="comment-author-link">Brian</span> on <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/#comment-1139">Create a routed Access Point with Raspberry Pi and OpenWrt</a></li><li class="recentcomments"><span class="comment-author-link">Niklas</span> on <a href="https://gremaudpi.emf-informatique.ch/monitoring-your-internet-access-with-raspberry-pi-2/#comment-1136">Monitoring your internet access with Raspberry Pi</a></li><li class="recentcomments"><span class="comment-author-link">Riccardo</span> on <a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-web-portal-with-any-router-and-a-raspberry-pi/#comment-1135">How to build a captive web portal with any router and a Raspberry Pi</a></li></ul></div><div id="archives-2" class="sidebar-box widget_archive clr"><h4 class="widget-title">Archives</h4>		<ul>
+				<li><a href="https://gremaudpi.emf-informatique.ch/2019/11/">November 2019</a></li>
+	<li><a href="https://gremaudpi.emf-informatique.ch/2019/01/">January 2019</a></li>
+	<li><a href="https://gremaudpi.emf-informatique.ch/2018/12/">December 2018</a></li>
+		</ul>
+			</div><div id="categories-2" class="sidebar-box widget_categories clr"><h4 class="widget-title">Categories</h4>		<ul>
+				<li class="cat-item cat-item-5"><a href="https://gremaudpi.emf-informatique.ch/category/netmon/">Network Monitoring</a>
+</li>
+	<li class="cat-item cat-item-31"><a href="https://gremaudpi.emf-informatique.ch/category/raspberry/">Raspberry</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="https://gremaudpi.emf-informatique.ch/category/sysint/">System Integration</a>
+</li>
+		</ul>
+			</div><div id="meta-2" class="sidebar-box widget_meta clr"><h4 class="widget-title">Meta</h4>			<ul>
+						<li><a href="https://gremaudpi.emf-informatique.ch/wp-login.php">Log in</a></li>
+			<li><a href="https://gremaudpi.emf-informatique.ch/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://gremaudpi.emf-informatique.ch/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</div>
+	</div><!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div><!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div><!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div><!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div><!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div><!-- .footer-box -->
+				
+			
+	</div><!-- .container -->
+
+	
+</div><!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by Nick			</div><!-- #copyright -->
+
+			
+	</div><!-- #footer-bottom-inner -->
+
+	
+</div><!-- #footer-bottom -->
+
+
+	</div><!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div><!-- #wrap -->
+
+
+</div><!-- #outer-wrap -->
+
+
+
+<a id="scroll-top" class="scroll-top-right" href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/#" style="display: inline;"><span class="fa fa-angle-up" aria-label="Scroll to the top of the page"></span></a>
+
+
+
+
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/imagesloaded.min.js"></script>
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/magnific-popup.min.js"></script>
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/lightbox.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var oceanwpLocalize = {"isRTL":"","menuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"https:\/\/gremaudpi.emf-informatique.ch\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/main.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var SlimStatParams = {"ajaxurl":"https:\/\/gremaudpi.emf-informatique.ch\/wp-admin\/admin-ajax.php","baseurl":"\/","dnt":"noslimstat,ab-item","ci":"YTo0OntzOjEyOiJjb250ZW50X3R5cGUiO3M6NDoicG9zdCI7czo4OiJjYXRlZ29yeSI7czoyNzoiNiwyMCwxNiwyMywyNywxOSwzMCwxMiw3LDE3IjtzOjEwOiJjb250ZW50X2lkIjtpOjIwNDE7czo2OiJhdXRob3IiO3M6NToiYWRtaW4iO30-.fe51ba331a5294076e1b1f67575e03ee"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/wp-slimstat.min.js"></script>
+<script type="text/javascript" src="./Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server – Technical wanderings_files/wp-embed.min.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://gremaudpi.emf-informatique.ch/wp-content/themes/oceanwp/assets/js/third/html5.min.js?ver=2.0.0'></script>
+<![endif]-->
+
+
+</body><div></div></html>

@@ -83,6 +83,10 @@ class Frames {
         return 0;
     }
 
+    getCurrentFrame() {
+        return this.frames[this.getCurrentFrameIndex()];
+    }
+
     addFrame() {
         const frame = this.getEmptyFrame();
         let currentFrameIndex = this.getCurrentFrameIndex();
@@ -236,9 +240,5 @@ class Frames {
         let trashIcon = document.querySelector("#trash").childNodes[1];
         trashIcon.innerHTML = "";
         trashIcon.innerHTML = "<i class=\"fas fa-trash\"></i>";
-    }
-
-    static close() {
-        document.querySelector("#frames").style.transform = "translate(-50%,-50%) scale(0,0)";
     }
 }

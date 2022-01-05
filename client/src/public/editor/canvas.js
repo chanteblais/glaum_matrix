@@ -29,13 +29,13 @@ class Canvas {
         this.ctx.globalAlpha = 1;
         this.ctx.fillRect(0, 0, this.w, this.h);
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([0, 0, 0, 255]));
-        this.emptySrc = this.canvas.toDataURL()
+        this.emptySrc = this.canvas.toDataURL();
         this.steps = [];
         this.setColor([255, 255, 255, 255]);
         this.framesManager = new Frames(this);
         this.framesManager.addFrame();
 
-        this.previous_point = new Point(undefined, undefined)
+        this.previous_point = new Point(undefined, undefined);
 
         // Moved on-click to on-mouse-up to tell the difference between a click and a mouse-drag + click
         this.canvas.addEventListener("mousemove", e => {
@@ -44,16 +44,16 @@ class Canvas {
             }
         });
         this.canvas.addEventListener("touchmove", e => {
-            this.perform(e.touches[0].clientX, e.touches[0].clientY)
-        })
-
-        this.canvas.addEventListener("mousedown", e => {
-            this.previous_point = new Point(undefined, undefined)
-            this.active = true;
-            this.publish();
+            this.perform(e.touches[0].clientX, e.touches[0].clientY);
         });
-        this.canvas.addEventListener("mouseup", e => {
-            this.active = false
+
+        this.canvas.addEventListener("mousedown", async e => {
+            this.previous_point = new Point(undefined, undefined);
+            this.active = true;
+            window.app.publish().then();
+        });
+        this.canvas.addEventListener("mouseup", async e => {
+            this.active = false;
             if (this.previous_point.x !== undefined) {
                 return; // Don't re-paint the last point in a streak
             }
@@ -76,7 +76,7 @@ class Canvas {
                 this.previous_point = new Point(x, y);
                 this.draw(x, y);
             }
-            this.publish();
+            window.app.publish().then();
         });
         this.framesManager.load();
     }
@@ -143,7 +143,7 @@ class Canvas {
 
     shiftFrameLeftAndDuplicate() {
         let color = this.color;
-        this.framesManager.duplicateFrame()
+        this.framesManager.duplicateFrame();
         let img = this.framesManager.frames[this.framesManager.getCurrentFrameIndex()][1];
         let i, j;
         for (i = 1; i < this.width - 1; i++) {
@@ -156,24 +156,8 @@ class Canvas {
     }
 
     getColor(x, y) {
-        const p = document.querySelector("#canvas").getContext('2d').getImageData(Math.floor(x * (window.board.w / window.board.width)), Math.floor(y * (window.board.h / window.board.height)), Math.floor(window.board.w / window.board.width), Math.floor(window.board.h / window.board.height)).data;
+        const p = document.querySelector("#canvas").getContext("2d").getImageData(Math.floor(x * (window.board.w / window.board.width)), Math.floor(y * (window.board.h / window.board.height)), Math.floor(window.board.w / window.board.width), Math.floor(window.board.h / window.board.height)).data;
         return ColourUtils.rgbToHex(p[0], p[1], p[2]);
-    }
-
-    publish() {
-        const frame = [];
-        for (let i = 0; i < this.height; i++) {
-            for (let j = 0; j < this.width; j++) {
-                frame.push(this.getColor(j, i));
-            }
-        }
-        const payload = [];
-        payload[0] = frame;
-        fetch('http://localhost:3000/publish', {
-            headers: {"Content-Type": "application/json"},
-            method: 'POST',
-            body: JSON.stringify({gif: false, payload: payload})
-        })
     }
 
     setColor(color) {
@@ -191,18 +175,18 @@ class Canvas {
         document.querySelectorAll("#toolbar .item").forEach((x, i) => {
             if (this.tools[i]) x.style.backgroundColor = "grey";
             else x.style.backgroundColor = "";
-        })
+        });
     }
 
     save() {
-        console.log("Saving")
+        console.log("Saving");
         this.canvas.toBlob(function (blob) {
             var url = URL.createObjectURL(blob);
-            var link = document.createElement('a');
-            link.download = 'canvas.png';
+            var link = document.createElement("a");
+            link.download = "canvas.png";
             link.href = url;
             link.click();
-        })
+        });
     }
 
     clear() {
@@ -211,8 +195,8 @@ class Canvas {
         this.data = [...Array(this.width)].map(e => Array(this.height).fill([0, 0, 0, 255]));
         this.setColor(this.color);
         this.setmode(this.tool.pen);
-        this.publish();
         this.framesManager.updateFrame();
+        window.app.publish().then();
     }
 
     addImage() {
@@ -249,9 +233,9 @@ class Canvas {
                             _this.draw(i, j);
                         }
                     }
-                }
-            }
-        }
+                };
+            };
+        };
     }
 
     perform(clientX, clientY) {
@@ -269,6 +253,6 @@ class Canvas {
         } else if (this.tools[this.tool.eraser]) {
             this.erase(x, y);
         }
-        this.publish();
+        window.app.publish().then();
     }
 }

@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<!-- saved from url=(0144)https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/ -->
+<html class="html" lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<link rel="profile" href="https://gmpg.org/xfn/11">
+
+	<title>Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings</title>
+<link rel="pingback" href="https://gremaudpi.emf-informatique.ch/xmlrpc.php">
+<meta name="viewport" content="width=device-width, initial-scale=1"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Technical wanderings » Feed" href="https://gremaudpi.emf-informatique.ch/feed/">
+<link rel="alternate" type="application/rss+xml" title="Technical wanderings » Comments Feed" href="https://gremaudpi.emf-informatique.ch/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Technical wanderings » Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli Comments Feed" href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/12.0.0-1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/gremaudpi.emf-informatique.ch\/wp-includes\/js\/wp-emoji-release.min.js?ver=5.2.5"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55357,56424,55356,57342,8205,55358,56605,8205,55357,56424,55356,57340],[55357,56424,55356,57342,8203,55358,56605,8203,55357,56424,55356,57340]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+	<link rel="stylesheet" id="wp-block-library-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/style.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="wp-block-library-theme-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/theme.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="font-awesome-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/all.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="simple-line-icons-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/simple-line-icons.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="magnific-popup-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/magnific-popup.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="slick-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/slick.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="oceanwp-style-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/style.min(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="oceanwp-google-font-lato-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="oe-widgets-style-css" href="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/widgets.css" type="text/css" media="all">
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/jquery.js"></script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/jquery-migrate.min.js"></script>
+<link rel="https://api.w.org/" href="https://gremaudpi.emf-informatique.ch/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://gremaudpi.emf-informatique.ch/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://gremaudpi.emf-informatique.ch/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to Active Directory" href="https://gremaudpi.emf-informatique.ch/configure-a-raspberry-pi-running-openwrt-and-coova-chilli-captive-portal-to-authenticate-visitors-to-active-directory/">
+<link rel="next" title="Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server" href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/">
+<meta name="generator" content="WordPress 5.2.5">
+<link rel="canonical" href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/">
+<link rel="shortlink" href="https://gremaudpi.emf-informatique.ch/?p=1987">
+<link rel="alternate" type="application/json+oembed" href="https://gremaudpi.emf-informatique.ch/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fgremaudpi.emf-informatique.ch%2Fhow-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt%2F">
+<link rel="alternate" type="text/xml+oembed" href="https://gremaudpi.emf-informatique.ch/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fgremaudpi.emf-informatique.ch%2Fhow-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt%2F&amp;format=xml">
+		<style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style>
+		<!-- OceanWP CSS -->
+<style type="text/css">
+/* Header CSS */#site-header,.has-transparent-header .is-sticky #site-header,.has-vh-transparent .is-sticky #site-header.vertical-header,#searchform-header-replace{background-color:#0083ef}#site-header.has-header-media .overlay-header-media{background-color:rgba(0,0,0,0.5)}#site-logo a.site-logo-text{color:#ffffff}#site-logo a.site-logo-text:hover{color:#d1ecff}#site-navigation-wrap .dropdown-menu >li >a,.oceanwp-mobile-menu-icon a,#searchform-header-replace-close{color:#ffffff}#site-navigation-wrap .dropdown-menu >li >a:hover,.oceanwp-mobile-menu-icon a:hover,#searchform-header-replace-close:hover{color:#d1ecff}#site-navigation-wrap .dropdown-menu >.current-menu-item >a,#site-navigation-wrap .dropdown-menu >.current-menu-ancestor >a,#site-navigation-wrap .dropdown-menu >.current-menu-item >a:hover,#site-navigation-wrap .dropdown-menu >.current-menu-ancestor >a:hover{color:#d1ecff}/* Typography CSS */body{font-family:Lato;font-size:18px;color:#000000}h1,h2,h3,h4,h5,h6,.theme-heading,.widget-title,.oceanwp-widget-recent-posts-title,.comment-reply-title,.entry-title,.sidebar-box .widget-title{font-family:Lato;color:#000000}h1{font-size:36px;color:#000000;line-height:1}h2{font-size:30px;color:#000000;line-height:1}h3{font-size:24px;color:#000000;line-height:1}h4{font-size:18px;color:#000000}#site-logo a.site-logo-text{font-family:Lato}#site-navigation-wrap .dropdown-menu >li >a,#site-header.full_screen-header .fs-dropdown-menu >li >a,#site-header.top-header #site-navigation-wrap .dropdown-menu >li >a,#site-header.center-header #site-navigation-wrap .dropdown-menu >li >a,#site-header.medium-header #site-navigation-wrap .dropdown-menu >li >a,.oceanwp-mobile-menu-icon a{font-size:15px;letter-spacing:1px}.page-header .page-header-title,.page-header.background-image-page-header .page-header-title{line-height:1}.blog-entry.post .blog-entry-header .entry-title a{font-size:36px;color:#000000;line-height:1}.single-post .entry-title{font-size:40px;color:#000000;line-height:1}
+</style><style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style><link href="chrome-extension://idpbkophnbfijcnlffdmmppgnncgappc/css/content.css" rel="stylesheet" type="text/css"></head>
+
+<body class="post-template-default single single-post postid-1987 single-format-standard wp-embed-responsive oceanwp-theme dropdown-mobile no-header-border default-breakpoint has-sidebar content-right-sidebar post-in-category-raspberry post-in-category-sysint has-breadcrumbs elementor-default elementor-kit-3173" itemscope="itemscope" itemtype="https://schema.org/Article" style="">
+
+	
+	
+	<div id="outer-wrap" class="site clr">
+
+		<a class="skip-link screen-reader-text" href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/#main">Skip to content</a>
+
+		
+		<div id="wrap" class="clr">
+
+			
+			
+<header id="site-header" class="minimal-header clr" data-height="74" itemscope="itemscope" itemtype="https://schema.org/WPHeader" role="banner">
+
+	
+					
+			<div id="site-header-inner" class="clr container">
+
+				
+				
+
+<div id="site-logo" class="clr" itemscope="" itemtype="https://schema.org/Brand">
+
+	
+	<div id="site-logo-inner" class="clr">
+
+						<a href="https://gremaudpi.emf-informatique.ch/" rel="home" class="site-title site-logo-text">Technical wanderings</a>
+				
+	</div><!-- #site-logo-inner -->
+
+	
+	
+</div><!-- #site-logo -->
+
+			<div id="site-navigation-wrap" class="clr">
+			
+			
+			
+			<nav id="site-navigation" class="navigation main-navigation clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement" role="navigation">
+
+				<ul id="menu-main" class="main-menu dropdown-menu sf-menu sf-js-enabled" style="touch-action: pan-y;"><li id="menu-item-17" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-17"><a href="https://gremaudpi.emf-informatique.ch/" class="menu-link"><span class="text-wrap">Home</span></a></li><li id="menu-item-121" class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-121"><a href="https://gremaudpi.emf-informatique.ch/blog/" class="menu-link"><span class="text-wrap">Blog</span></a></li><li id="menu-item-18" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18"><a href="https://gremaudpi.emf-informatique.ch/contact/" class="menu-link"><span class="text-wrap">Contact</span></a></li><li id="menu-item-20" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="https://gremaudpi.emf-informatique.ch/about/" class="menu-link"><span class="text-wrap">About</span></a></li><li id="menu-item-3182" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3182"><a href="https://gremaudpi.emf-informatique.ch/donation/" class="menu-link"><span class="text-wrap">Donation</span></a></li></ul>
+			</nav><!-- #site-navigation -->
+
+			
+			
+					</div><!-- #site-navigation-wrap -->
+			
+		
+	
+				
+	<div class="oceanwp-mobile-menu-icon clr mobile-right">
+
+		
+		
+		
+		<a href="javascript:void(0)" class="mobile-menu" aria-label="Mobile Menu">
+							<i class="fa fa-bars" aria-hidden="true"></i>
+								<span class="oceanwp-text">Menu</span>
+				<span class="oceanwp-close-text">Close</span>
+						</a>
+
+		
+		
+		
+	</div><!-- #oceanwp-mobile-menu-navbar -->
+
+
+			</div><!-- #site-header-inner -->
+
+			
+<div id="mobile-dropdown" class="clr" style="">
+
+	<nav class="clr" itemscope="itemscope" itemtype="https://schema.org/SiteNavigationElement">
+
+		<ul id="menu-main-1" class="menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home menu-item-17"><a href="https://gremaudpi.emf-informatique.ch/">Home</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page current_page_parent menu-item-121"><a href="https://gremaudpi.emf-informatique.ch/blog/">Blog</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-18"><a href="https://gremaudpi.emf-informatique.ch/contact/">Contact</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-20"><a href="https://gremaudpi.emf-informatique.ch/about/">About</a></li>
+<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3182"><a href="https://gremaudpi.emf-informatique.ch/donation/">Donation</a></li>
+</ul>
+<div id="mobile-menu-search" class="clr">
+	<form method="get" action="https://gremaudpi.emf-informatique.ch/" class="mobile-searchform" role="search" aria-label="Search for:">
+		<label for="ocean-mobile-search1">
+			<input type="search" name="s" autocomplete="off" placeholder="Search">
+			<button type="submit" class="searchform-submit" aria-label="Submit search">
+				<i class="icon-magnifier" aria-hidden="true"></i>
+			</button>
+					</label>
+			</form>
+</div><!-- .mobile-menu-search -->
+
+	</nav>
+
+</div>
+
+			
+			
+		
+		
+</header><!-- #site-header -->
+
+
+			
+			<main id="main" class="site-main clr" role="main">
+
+				
+
+<header class="page-header">
+
+	
+	<div class="container clr page-header-inner">
+
+		
+			<h1 class="page-header-title clr" itemprop="headline">Blog</h1>
+
+			
+		
+		<nav aria-label="Breadcrumbs" class="site-breadcrumbs clr position-" itemprop="breadcrumb"><ol class="trail-items" itemscope="" itemtype="http://schema.org/BreadcrumbList"><meta name="numberOfItems" content="3"><meta name="itemListOrder" content="Ascending"><li class="trail-item trail-begin" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://gremaudpi.emf-informatique.ch/" rel="home" aria-label="Home" itemtype="https://schema.org/Thing" itemprop="item"><span itemprop="name"><span class="icon-home" aria-hidden="true"></span><span class="breadcrumb-home has-icon">Home</span></span></a><span class="breadcrumb-sep">&gt;</span><meta content="1" itemprop="position"></li><li class="trail-item" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://gremaudpi.emf-informatique.ch/category/sysint/" itemtype="https://schema.org/Thing" itemprop="item"><span itemprop="name">System Integration</span></a><span class="breadcrumb-sep">&gt;</span><meta content="2" itemprop="position"></li><li class="trail-item trail-end" itemprop="itemListElement" itemscope="" itemtype="https://schema.org/ListItem"><a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/" itemtype="https://schema.org/Thing" itemprop="item"><span itemprop="name">Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli</span></a><meta content="3" itemprop="position"></li></ol></nav>
+	</div><!-- .page-header-inner -->
+
+	
+	
+</header><!-- .page-header -->
+
+
+	
+	<div id="content-wrap" class="container clr">
+
+		
+		<div id="primary" class="content-area clr">
+
+			
+			<div id="content" class="site-content clr">
+
+				
+				
+<article id="post-1987">
+
+	
+
+<header class="entry-header clr">
+	<h2 class="single-post-title entry-title" itemprop="headline">Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli</h2><!-- .single-post-title -->
+</header><!-- .entry-header -->
+
+
+<ul class="meta ospm-default clr">
+
+	
+					<li class="meta-author" itemprop="name"><span class="screen-reader-text">Post author:</span><i class="icon-user" aria-hidden="true"></i><a href="https://gremaudpi.emf-informatique.ch/author/admin/" title="Posts by admin" rel="author" itemprop="author" itemscope="itemscope" itemtype="https://schema.org/Person">admin</a></li>
+		
+		
+		
+		
+		
+		
+	
+		
+					<li class="meta-date" itemprop="datePublished"><span class="screen-reader-text">Post published:</span><i class="icon-clock" aria-hidden="true"></i>4 January 2019</li>
+		
+		
+		
+		
+		
+	
+		
+		
+		
+					<li class="meta-cat"><span class="screen-reader-text">Post category:</span><i class="icon-folder" aria-hidden="true"></i><a href="https://gremaudpi.emf-informatique.ch/category/raspberry/" rel="category tag">Raspberry</a> <span class="owp-sep">/</span> <a href="https://gremaudpi.emf-informatique.ch/category/sysint/" rel="category tag">System Integration</a></li>
+		
+		
+		
+	
+		
+		
+		
+		
+		
+					<li class="meta-comments"><span class="screen-reader-text">Post comments:</span><i class="icon-bubble" aria-hidden="true"></i><a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/#respond" class="comments-link">0 Comments</a></li>
+		
+	
+</ul>
+
+
+
+<div class="entry-content clr" itemprop="text">
+	<p>In this article, I will explain how to configure a splash page on a Raspberry Pi. As you perhaps know, Coova-Chilli does not provide a landing page for the visitors of the captive portal. In this document, we will use the buitin web server (uhttpd) that provides the Luci administration interface to host a landing page for our visitors.
+</p>
+<p>The Rapsberry Pi will run OpenWrt and will use following components to fulfill our needs:
+</p>
+<ul>
+<li>Coova-Chilli (the captive portal)
+</li>
+<li>Uhttpd (hosting the splash page and OpenWrt web management (LUCI))
+</li>
+</ul>
+<p>An external radius server is also needed to authenticate the captive portal users. Any radius server (freeradius, Microsoft NPS , etc…) can do the job. The installation of the radius server is not covered in this document, but the following post (<a href="https://gremaudpi.emf-informatique.ch/configure-a-raspberry-pi-running-openwrt-and-coova-chilli-captive-portal-to-authenticate-visitors-to-active-directory/">https://gremaudpi.emf-informatique.ch/configure-a-raspberry-pi-running-openwrt-and-coova-chilli-captive-portal-to-authenticate-visitors-to-active-directory/</a>) describes a way to install and configure Microsoft NPS so serve as authenticator.
+</p>
+<h1>Schema<br>
+</h1>
+<p>The following schema shows the actors in presence. Notice that the management workstation is just used for configuration and can be removed once the configuration is completed.
+</p>
+<p><img src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/062119_0922_Configurean1.png" alt="">
+	</p>
+<h1>Prerequisite<br>
+</h1>
+<p>The prerequisite for this installation is to configure the Rapberry Pi as a routed Access Point as described in my previous post available under this link: <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/">https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/</a>
+	</p>
+<p>Once this is done, you should have a Raspberry Pi running OpenWrt and configured as a routed accesspoint. The SSID visible to the visitors will be "Guest", but you can rename it easily if you want.
+</p>
+<p><strong>WARNING :</strong> be aware that Chilli will create a tunnel (tun0) on the wlan0 interface of the Raspi.
+</p>
+<p>The rest of the configuration is mainly based on <a href="https://openwrt.org/docs/guide-user/services/captive-portal/wireless.hotspot.coova-chilli">https://openwrt.org/docs/guide-user/services/captive-portal/wireless.hotspot.coova-chilli</a>
+	</p>
+<h1>Install coova-chilli<br>
+</h1>
+<p>Log on to the raspberry using root/&lt;no password&gt; and install coova-chilli.
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">opkg update<br>opkg install coova-chilli<br>opkg install nano<br>
+</span></p>
+<p>Stop and disable chilli to avoid lock down
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">/etc/init.d/chilli stop<br>/etc/init.d/chilli disable<br>
+</span></p>
+<p>The final configuration will be made later
+</p>
+<h1>Install the captive portal login page<br>
+</h1>
+<h2>Install php7-cgi<br>
+</h2>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">opkg install php7-cgi<br>
+</span></p>
+<p>Verify installation
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">ls /usr/bin/php*<br>
+</span></p>
+<p><span style="text-decoration:underline">Output:<br>
+</span></p>
+<p>/usr/bin/php-cgi
+</p>
+<h2>Configure uhttpd<br>
+</h2>
+<p>Edit the main configuration file of the web server
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">nano /etc/config/uhttpd<br>
+</span></p>
+<p>Uncomment interpreter and save file</p>
+<table style="border-collapse:collapse" border="0">
+<colgroup>
+<col style="width:18px">
+<col style="width:608px"></colgroup>
+<tbody valign="top">
+<tr>
+<td style="background: #ed7d31; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  solid 0.5pt; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">&nbsp;</td>
+<td style="background: #fbe4d5; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  none; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">
+<p><span style="font-family:Consolas; font-size:12pt">        # List of extension-&gt;interpreter mappings.<br>        # Files with an associated interpreter can<br>        # be called outside of the CGI prefix and do<br>        # not need to be executable.<br>        list interpreter        ".php=/usr/bin/php-cgi"</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Restart uhttpd
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">service uhttpd restart<br>
+</span></p>
+<p>Now let's make some testing
+</p>
+<h2>Check if php is working<br>
+</h2>
+<p>To check if php is running, we will create a test page in the /www directory
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">nano /www/test.php<br>
+</span></p>
+<p>Paste the following code into the newly created file</p>
+<table style="border-collapse:collapse" border="0">
+<colgroup>
+<col style="width:18px">
+<col style="width:608px"></colgroup>
+<tbody valign="top">
+<tr>
+<td style="background: #ed7d31; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  solid 0.5pt; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">&nbsp;</td>
+<td style="background: #fbe4d5; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  none; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">
+<p><span style="font-family:Consolas; font-size:11pt">&lt;html&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;head&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;title&gt;PHP Test&lt;/title&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/head&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;body&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;?php<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo '&lt;p&gt;Hello World&lt;/p&gt;'; <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// prints e.g. 'Current PHP version: 4.1.1'<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo 'Current PHP version: ' . phpversion();<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// prints e.g. '2.0' or nothing if the extension isn't enabled<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo phpversion('tidy');<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;?&gt; <br>&nbsp;&nbsp;&nbsp;&nbsp;&lt;/body&gt;<br>&lt;/html&gt;</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Opening the page in a browser from the management station should give the following output:
+</p>
+<p><img src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/062119_0922_Configurean2.png" alt="">
+			</p>
+<p>Copy hotspot-login-master.zip from <a href="https://github.com/mongramosjr/hotspot-login">https://github.com/mongramosjr/hotspot-login</a>
+			</p>
+<p>Unzip to /www/hotspotlogin
+</p>
+<p><img src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/062119_0922_Configurean3.png" alt="">
+			</p>
+<p>Edit hotspotlogin.php to allow http and have a look to $uamsecret
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">nano /www/hotspotlogin/hotspotlogin.php<br>
+</span></p>
+<p>Change the variable «&nbsp;uamsecret&nbsp;» to your needs and comment out the SSL part to allow HTTP requests</p>
+<table style="border-collapse:collapse" border="0">
+<colgroup>
+<col style="width:18px">
+<col style="width:608px"></colgroup>
+<tbody valign="top">
+<tr>
+<td style="background: #ed7d31; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  solid 0.5pt; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">&nbsp;</td>
+<td style="background: #fbe4d5; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  none; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">
+<p><span style="font-family:Consolas; font-size:11pt"># Shared secret used to encrypt challenge with. Prevents dictionary attacks.<br># You should change this to your own shared secret.<br>$uamsecret = "greatsecret";<br>…<br># /* if SSL was not used show an error */<br># if (!($_SERVER['HTTPS'] == 'on')) {<br>#&nbsp;&nbsp;&nbsp;&nbsp;include('hotspotlogin-nonssl.php');<br>#&nbsp;&nbsp;&nbsp;&nbsp;exit(0);<br># }</span></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Restart uhttpd
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">service uhttpd restart<br>
+</span></p>
+<p>Test login page from a browser on the management station (<a href="http://192.168.0.30/hotspotlogin/hotspotlogin.php">http://192.168.0.30/hotspotlogin/hotspotlogin.php</a>), output should look like this
+</p>
+<p><img src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/062119_0922_Configurean4.png" alt="">
+				</p>
+<h1>Configure coova-chilli<br>
+</h1>
+<p>Save original config file and recreate one
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">mv /etc/config/chilli /etc/config/chilli-orig<br>
+</span></p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">nano /etc/config/chilli<br>
+</span></p>
+<p>Paste the following content. The section containing the radius parameter should be adapted to your environment.</p>
+<table style="border-collapse:collapse" border="0">
+<colgroup>
+<col style="width:17px">
+<col style="width:609px"></colgroup>
+<tbody valign="top">
+<tr>
+<td style="background: #ed7d31; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  solid 0.5pt; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">&nbsp;</td>
+<td style="background: #fbe4d5; padding-left: 7px; padding-right: 7px; border-top:  solid 0.5pt; border-left:  none; border-bottom:  solid 0.5pt; border-right:  solid 0.5pt">
+<p><span style="font-family:Consolas; font-size:12pt">#<br># Sample Coova-Chilli configuration file modified by gremaudpi<br>#</span></p>
+<p>config chilli</p>
+<p>    option interval 3600<br>    option swapoctets 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</p>
+<p>    ######## TUN and DHCP Parameters ########<br>&nbsp;&nbsp;&nbsp;&nbsp;<br>    option tundev 'tun0'<br>    option dhcpif 'wlan0'<br>    option net 192.168.182.0/24<br>    option lease 600<br>    option dns1 8.8.8.8<br>    option dns2 8.8.4.4<br>    option ipup '/etc/chilli/up.sh'<br>    option ipdown '/etc/chilli/down.sh'</p>
+<p>    ######## Radius parameters ########</p>
+<p>    option radiusserver1 '&lt;external-radius-server-ip-address&gt;'<br>    option radiusserver2 ''<br>    option radiusauthport 1812<br>    option radiusacctport 1813<br>    option radiussecret '&lt;external-radius-server-secret&gt;'<br>    option radiusnasid 'ap001'<br>    option ssid 'ACME-company'</p>
+<p>    ######## Universal access method (UAM) parameters ########</p>
+<p>    option uamlisten 192.168.182.1<br>    option uamserver 'http://192.168.0.30/hotspotlogin/hotspotlogin.php'<br>    option uamsecret 'greatsecret'<br>    option uamallowed ''<br>    option uamdomain ''<br>    option uamanydns 1<br>    option uamaliasname 'login'<br>    option nouamsuccess 1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Start chilli
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">/etc/init.d/chilli start<br>
+</span></p>
+<p>Verify that chilli loaded our configuration by looking at following file
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">cat /var/run/chilli*.conf<br>
+</span></p>
+<p>If this is okay, enable chilli to survive reboot
+</p>
+<p style="background: #d0cece"><span style="font-family:Consolas; font-size:12pt">/etc/init.d/chilli enable<br>
+</span></p>
+<p>Now, if you connect a WiFi enabled device to your Guest SSID, a splash page should be presented to your visitor.
+</p>
+<p><img src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/062119_0922_Configurean5.png" alt="">
+					</p>
+<p>You will need to configure an external Radius (Freeradius, Microsoft NPS or a cloud based solution like Jumpcloud) and to configure Coova-Chilli to use it in order to allow your visitors to log in.
+</p>
+<p>That's all folks…</p>
+<p></p><p></p>
+
+</div><!-- .entry -->
+
+<div class="post-tags clr">
+	<span class="owp-tag-text">Tags: </span><a href="https://gremaudpi.emf-informatique.ch/tag/access-point/" rel="tag">access point</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/captive-portal/" rel="tag">captive portal</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/chilli/" rel="tag">chilli</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/coova/" rel="tag">coova</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/coova-chilli/" rel="tag">coova-chilli</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/openwrt/" rel="tag">openwrt</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/radius/" rel="tag">Radius</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/rapberry/" rel="tag">rapberry</a><span class="owp-sep">,</span> <a href="https://gremaudpi.emf-informatique.ch/tag/raspberry-pi/" rel="tag">raspberry pi</a></div>
+
+<section id="comments" class="comments-area clr has-comments">
+
+	
+	
+		<div id="respond" class="comment-respond">
+		<h3 id="reply-title" class="comment-reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/#respond" style="display:none;">Cancel reply</a></small></h3>			<form action="https://gremaudpi.emf-informatique.ch/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+				<div class="comment-textarea"><label for="comment" class="screen-reader-text">Comment</label><textarea name="comment" id="comment" cols="39" rows="4" tabindex="0" class="textarea-comment" placeholder="Your comment here..."></textarea></div><div class="comment-form-author"><label for="author" class="screen-reader-text">Enter your name or username to comment</label><input type="text" name="author" id="author" value="" placeholder="Name (required)" size="22" tabindex="0" aria-required="true" class="input-name"></div>
+<div class="comment-form-email"><label for="email" class="screen-reader-text">Enter your email address to comment</label><input type="text" name="email" id="email" value="" placeholder="Email (required)" size="22" tabindex="0" aria-required="true" class="input-email"></div>
+<div class="comment-form-url"><label for="url" class="screen-reader-text">Enter your website URL (optional)</label><input type="text" name="url" id="url" value="" placeholder="Website" size="22" tabindex="0" class="input-website"></div>
+<p class="form-submit"><input name="submit" type="submit" id="comment-submit" class="submit" value="Post Comment"> <input type="hidden" name="comment_post_ID" value="1987" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p>			</form>
+			</div><!-- #respond -->
+	
+</section><!-- #comments -->
+
+</article>
+
+				
+			</div><!-- #content -->
+
+			
+		</div><!-- #primary -->
+
+		
+
+<aside id="right-sidebar" class="sidebar-container widget-area sidebar-primary" itemscope="itemscope" itemtype="https://schema.org/WPSideBar" role="complementary" aria-label="Primary Sidebar">
+
+	
+	<div id="right-sidebar-inner" class="clr">
+
+		<div id="search-2" class="sidebar-box widget_search clr">
+<form role="search" method="get" class="searchform" action="https://gremaudpi.emf-informatique.ch/">
+	<label for="ocean-search-form-2">
+		<span class="screen-reader-text">Search for:</span>
+		<input type="search" id="ocean-search-form-2" class="field" autocomplete="off" placeholder="Search" name="s">
+			</label>
+	</form>
+</div>		<div id="recent-posts-2" class="sidebar-box widget_recent_entries clr">		<h4 class="widget-title">Recent Posts</h4>		<ul>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/install-cacti-0-8-8f-and-weathermap-plugin-0-98a-on-ubuntu-16-04/">Install Cacti 0.8.8f and Weathermap plugin 0.98a on Ubuntu 16.04</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/how-to-create-a-standalone-captive-portal-with-coova-chilli-and-freeradius-on-a-raspberry-pi-running-openwrt/">Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to an internal Freeradius Server</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/">Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/configure-a-raspberry-pi-running-openwrt-and-coova-chilli-captive-portal-to-authenticate-visitors-to-active-directory/">Configure a Raspberry Pi running OpenWrt and Coova Chilli to authenticate visitors to Active Directory</a>
+									</li>
+											<li>
+					<a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-radiusdesk-and-coova-chilli-on-raspberry-pi-running-openwrt/">How to build a captive portal with Radiusdesk and Coova-chilli on Raspberry Pi running OpenWrt</a>
+									</li>
+					</ul>
+		</div><div id="recent-comments-2" class="sidebar-box widget_recent_comments clr"><h4 class="widget-title">Recent Comments</h4><ul id="recentcomments"><li class="recentcomments"><span class="comment-author-link">Diego</span> on <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/#comment-1161">Create a routed Access Point with Raspberry Pi and OpenWrt</a></li><li class="recentcomments"><span class="comment-author-link"><a href="http://www.deposaja.com/" rel="external nofollow" class="url">Meagan Quong</a></span> on <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/#comment-1142">Create a routed Access Point with Raspberry Pi and OpenWrt</a></li><li class="recentcomments"><span class="comment-author-link">Brian</span> on <a href="https://gremaudpi.emf-informatique.ch/create-a-routed-access-point-with-raspberry-pi-and-openwrt/#comment-1139">Create a routed Access Point with Raspberry Pi and OpenWrt</a></li><li class="recentcomments"><span class="comment-author-link">Niklas</span> on <a href="https://gremaudpi.emf-informatique.ch/monitoring-your-internet-access-with-raspberry-pi-2/#comment-1136">Monitoring your internet access with Raspberry Pi</a></li><li class="recentcomments"><span class="comment-author-link">Riccardo</span> on <a href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-web-portal-with-any-router-and-a-raspberry-pi/#comment-1135">How to build a captive web portal with any router and a Raspberry Pi</a></li></ul></div><div id="archives-2" class="sidebar-box widget_archive clr"><h4 class="widget-title">Archives</h4>		<ul>
+				<li><a href="https://gremaudpi.emf-informatique.ch/2019/11/">November 2019</a></li>
+	<li><a href="https://gremaudpi.emf-informatique.ch/2019/01/">January 2019</a></li>
+	<li><a href="https://gremaudpi.emf-informatique.ch/2018/12/">December 2018</a></li>
+		</ul>
+			</div><div id="categories-2" class="sidebar-box widget_categories clr"><h4 class="widget-title">Categories</h4>		<ul>
+				<li class="cat-item cat-item-5"><a href="https://gremaudpi.emf-informatique.ch/category/netmon/">Network Monitoring</a>
+</li>
+	<li class="cat-item cat-item-31"><a href="https://gremaudpi.emf-informatique.ch/category/raspberry/">Raspberry</a>
+</li>
+	<li class="cat-item cat-item-6"><a href="https://gremaudpi.emf-informatique.ch/category/sysint/">System Integration</a>
+</li>
+		</ul>
+			</div><div id="meta-2" class="sidebar-box widget_meta clr"><h4 class="widget-title">Meta</h4>			<ul>
+						<li><a href="https://gremaudpi.emf-informatique.ch/wp-login.php">Log in</a></li>
+			<li><a href="https://gremaudpi.emf-informatique.ch/feed/">Entries <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://gremaudpi.emf-informatique.ch/comments/feed/">Comments <abbr title="Really Simple Syndication">RSS</abbr></a></li>
+			<li><a href="https://wordpress.org/" title="Powered by WordPress, state-of-the-art semantic personal publishing platform.">WordPress.org</a></li>			</ul>
+			</div>
+	</div><!-- #sidebar-inner -->
+
+	
+</aside><!-- #right-sidebar -->
+
+
+	</div><!-- #content-wrap -->
+
+	
+
+	</main><!-- #main -->
+
+	
+	
+	
+		
+<footer id="footer" class="site-footer" itemscope="itemscope" itemtype="https://schema.org/WPFooter" role="contentinfo">
+
+	
+	<div id="footer-inner" class="clr">
+
+		
+
+<div id="footer-widgets" class="oceanwp-row clr">
+
+	
+	<div class="footer-widgets-inner container">
+
+					<div class="footer-box span_1_of_4 col col-1">
+							</div><!-- .footer-one-box -->
+
+							<div class="footer-box span_1_of_4 col col-2">
+									</div><!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-3 ">
+									</div><!-- .footer-one-box -->
+				
+							<div class="footer-box span_1_of_4 col col-4">
+									</div><!-- .footer-box -->
+				
+			
+	</div><!-- .container -->
+
+	
+</div><!-- #footer-widgets -->
+
+
+
+<div id="footer-bottom" class="clr no-footer-nav">
+
+	
+	<div id="footer-bottom-inner" class="container clr">
+
+		
+		
+			<div id="copyright" class="clr" role="contentinfo">
+				Copyright - OceanWP Theme by Nick			</div><!-- #copyright -->
+
+			
+	</div><!-- #footer-bottom-inner -->
+
+	
+</div><!-- #footer-bottom -->
+
+
+	</div><!-- #footer-inner -->
+
+	
+</footer><!-- #footer -->
+
+	
+	
+</div><!-- #wrap -->
+
+
+</div><!-- #outer-wrap -->
+
+
+
+<a id="scroll-top" class="scroll-top-right" href="https://gremaudpi.emf-informatique.ch/how-to-build-a-captive-portal-with-coova-chilli-and-a-local-splash-page-on-a-raspberry-pi-running-openwrt/#" style="display: inline;"><span class="fa fa-angle-up" aria-label="Scroll to the top of the page"></span></a>
+
+
+
+
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/comment-reply.min.js"></script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/imagesloaded.min.js"></script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/magnific-popup.min.js"></script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/lightbox.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var oceanwpLocalize = {"isRTL":"","menuSearchStyle":"disabled","sidrSource":null,"sidrDisplace":"1","sidrSide":"left","sidrDropdownTarget":"link","verticalHeaderTarget":"link","customSelects":".woocommerce-ordering .orderby, #dropdown_product_cat, .widget_categories select, .widget_archive select, .single-product .variations_form .variations select","ajax_url":"https:\/\/gremaudpi.emf-informatique.ch\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/main.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var SlimStatParams = {"ajaxurl":"https:\/\/gremaudpi.emf-informatique.ch\/wp-admin\/admin-ajax.php","baseurl":"\/","dnt":"noslimstat,ab-item","ci":"YTo0OntzOjEyOiJjb250ZW50X3R5cGUiO3M6NDoicG9zdCI7czo4OiJjYXRlZ29yeSI7czozMDoiMzEsNiwyMCwxNiwyMywyNCwyNywxOSwzMCwxMiw3IjtzOjEwOiJjb250ZW50X2lkIjtpOjE5ODc7czo2OiJhdXRob3IiO3M6NToiYWRtaW4iO30-.676a87fcac09dde372217d1282b6e95d"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/wp-slimstat.min.js"></script>
+<script type="text/javascript" src="./Configure an internal Landing Page (Splash Page) on a Raspberry Pi running OpenWrt and Coova Chilli – Technical wanderings_files/wp-embed.min.js"></script>
+<!--[if lt IE 9]>
+<script type='text/javascript' src='https://gremaudpi.emf-informatique.ch/wp-content/themes/oceanwp/assets/js/third/html5.min.js?ver=2.0.0'></script>
+<![endif]-->
+
+
+</body><div></div></html>

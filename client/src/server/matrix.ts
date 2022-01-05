@@ -8,20 +8,21 @@ export class GlaumMatrix {
         this.devices.push(output);
     }
 
-    public async draw(pixelArray) {
-        for (let i = 0; i < pixelArray.length; i++) {
-            if (pixelArray[i]) {
-                this.devices.forEach(device => device.drawPixelFromHex(i, pixelArray[i]));
+    public draw(frames: Array<Array<string>>) {
+        if (frames.length !== 1) {
+            throw Error("Can only draw 1 frame");
+        }
+        for (let i = 0; i < frames[0].length; i++) {
+            if (frames[0][i]) {
+                this.devices.forEach(device => device.drawPixelFromHex(i, frames[0][i]));
             }
         }
 
         this.devices.forEach(device => device.show());
-        await new Promise(resolve => setTimeout(resolve, 10));
     }
 
-    public async playGIF(frames: Array<Array<string>>) {
-        const delayTime = 50;
-        const gifPlays = 5;
+    public async playGIF(frames: Array<Array<string>>, speed: number) {
+        const gifPlays = 2;
         for (let g = 0; g < gifPlays; g++) {
             let i;
             for (i = 0; i < frames.length; i++) {
@@ -35,7 +36,7 @@ export class GlaumMatrix {
                     j = 0;
                 }
                 this.devices.forEach(device => device.show());
-                await new Promise(resolve => setTimeout(resolve, delayTime));
+                await new Promise(resolve => setTimeout(resolve, speed));
             }
             if (i > frames.length) {
                 i = 0;

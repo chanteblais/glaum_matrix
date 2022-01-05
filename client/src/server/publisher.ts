@@ -4,10 +4,13 @@ import { FileUtils } from "./fileUtils";
 
 class Publisher {
 
+    private readonly imageLocationPattern: string = "../gifs/*.json";
     private readonly interval: number = 50;
+    private readonly refreshRate: number = 10;
     private readonly matrix: GlaumMatrix;
     private readonly simulatorMatrix: SimulatorMatrix;
-    private stop: boolean = false;
+    private stopped: boolean = false;
+    private paused: boolean = false;
 
     constructor() {
         this.matrix = new GlaumMatrix();
@@ -24,45 +27,58 @@ class Publisher {
             this.matrix.addOutput(rpiMatrix);
         }
         // Check from messages from parent
-        this.stop = false;
+        this.stopped = false;
         process.on("message", (command) => {
-            console.log("Recevied command", command);
-            this.stop = command === "stop";
+            console.log("Received command", command);
+            this.stopped = command === "stop";
+            this.paused = command === "pause";
         });
     }
 
     async loop() {
-        if (!this.stop) {
-            const fileData: Array<Array<string>> = [];
-            const lines = (await FileUtils.readFile("mygif")).split("\n");
-            lines.forEach(line => {
-                fileData.push(line.split(","));
-            });
-            const file = {
-                name: "mock",
-                blocked: false,
-                visible: true,
-                gif: lines.length > 1,
-                infinite: false,
-                data: fileData
-            };
-            if (!file.blocked && file.visible) {
-                if (file.gif) {
-                    await this.matrix.playGIF(file.data);
-                } else {
-                    await this.matrix.draw(file.data);
+        while (!this.stopped) {
+            if (!this.paused) {
+                for (const fileName of FileUtils.getFiles(this.imageLocationPattern)) {
+                    console.log("Playing file", fileName);
+                    const fileData = await this.getFileData(fileName);
+                    if (fileData) {
+                        // if (!fileData.blocked && fileData.visible) {
+                        if (fileData.gif) {
+                            await this.matrix.playGIF(fileData.payload, fileData.speed);
+                        } else {
+                            const e = new Date().getTime() + (10 * 1000);
+                            while (new Date().getTime() <= e) {
+                                const fileData = await this.getFileData(fileName);
+                                if (fileData) {
+                                    this.matrix.draw(fileData.payload);
+                                }
+                                await new Promise(resolve => setTimeout(resolve, this.refreshRate));
+                            }
+                        }
+
+                        // }
+                    }
                 }
+            } else {
+                console.log("Publisher is stopped. Will check again in", this.interval, "seconds");
+                await new Promise(resolve => setTimeout(resolve, this.interval));
             }
-        } else {
-            console.log("Publisher is stopped. Will check again in", this.interval, "seconds");
         }
     }
 
-    run() {
-        // Loop every 100 ms
-        setInterval(this.loop.bind(this), this.interval);
+    private async getFileData(fileName: string) {
+        const content = await FileUtils.readFile(fileName);
+        try {
+            return JSON.parse(content);
+        } catch (error) {
+            // Syntax error is expected when a file is read while is being written
+            if (!(error instanceof SyntaxError)) {
+                console.log("Error reading file", fileName, error);
+            }
+        }
+        return undefined;
     }
 }
 
 const publisher = new Publisher();
-publisher.run();
+publisher.loop();

@@ -16,7 +16,24 @@ body {
     margin: 0;
 }
 
-#popup, #frames {
+input {
+    font-size: 16px;
+}
+
+#gifSpeed{
+    transform: rotateY(180deg);
+}
+
+input.invalid::placeholder {
+    color: red;
+}
+
+.svg-icon {
+    filter: invert(100%) sepia(4%) saturate(67%) hue-rotate(27deg) brightness(112%) contrast(100%);
+    width: 30px;
+}
+
+.popup, #frames {
     background-color: #332f35;
     color: white;
     font-size: 20px;
@@ -24,12 +41,55 @@ body {
     z-index: 2;
 }
 
-#popup {
+.popup {
+    display: none;
+    position: absolute;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.popup > .field {
+    padding: 5px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup h4 {
+    margin: 10px;
+}
+
+.popup > .message {
+    font-size: 13px;
+    background: #bb6060;
+    line-height: 20px;
+    padding: 5px 0 5px;
     display: none;
 }
 
-#popup h3 {
-    line-height: 30px;
+.popup label {
+    font-size: 0.8em;
+}
+
+.popup > button {
+    background-color: #262327;
+    color: white;
+    margin: 15px auto 5px auto;
+    padding: 5px 10px 5px 10px;
+    font-size: 18px;
+    font-weight: bolder;
+    display: block;
+    border: none;
+    border-radius: 3px;
+    max-width: 60px;
+    transition: 0.2s all;
+}
+
+.popup > button:hover {
+    box-shadow: 0 0 3px 0 white;
+    cursor: pointer;
 }
 
 #frames {
@@ -71,37 +131,6 @@ body {
     top: 50%;
     color: white;
     font-size: 60px;
-}
-
-#width,
-#height {
-    background-color: #262327;
-    color: white;
-    margin: 10px;
-    padding: 5px;
-    font-size: 14px;
-    font-weight: bolder;
-    border: none;
-    border-radius: 3px;
-    max-width: 60px;
-}
-
-#close {
-    background-color: #262327;
-    color: white;
-    margin: 15px auto 5px auto;
-    padding: 5px 10px 5px 10px;
-    font-size: 18px;
-    font-weight: bolder;
-    display: block;
-    border: none;
-    border-radius: 3px;
-    max-width: 60px;
-    transition: 0.2s all;
-}
-
-#close:hover {
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.5);
 }
 
 #main {

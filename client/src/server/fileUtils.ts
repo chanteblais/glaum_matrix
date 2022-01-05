@@ -1,22 +1,16 @@
 const fs = require("fs");
+const glob = require("glob");
 
 export class FileUtils {
 
-    private static filepath = "../gifs/";
-
     private static locks: Array<string> = [];
 
-    public static writeFile(filename, content) {
+    public static writeFile(filename, data) {
         this.locks.push(filename);
         let fd;
         try {
-            fd = fs.openSync(`${this.filepath}${filename}.txt`, "w");
-            for (let i = 0; i < content.length; i++) {
-                fs.appendFileSync(fd, content[i].toString());
-                if (i < content.length - 1) {
-                    fs.appendFileSync(fd, "\n");
-                }
-            }
+            fd = fs.openSync(filename, "w");
+            fs.appendFileSync(fd, JSON.stringify(data));
         } catch (e) {
             console.error("Error writing file", filename, e);
             throw e;
@@ -39,10 +33,14 @@ export class FileUtils {
         }
 
         try {
-            return fs.readFileSync(`${this.filepath}${filename}.txt`, "utf8");
+            return fs.readFileSync(filename, "utf8");
         } catch (err) {
             console.error(err);
             throw err;
         }
+    }
+
+    public static getFiles(pattern) {
+        return glob.sync(pattern, { nonull: false });
     }
 }

@@ -21,7 +21,11 @@ const publisher = fork(path.join(__dirname, "publisher.js"));
 // Endpoints
 app.post("/publish", async function (req, res) {
     if (req.body) {
-        FileUtils.writeFile("mygif", req.body.payload);
+        if (req.body.name) {
+            FileUtils.writeFile(`../gifs/${req.body.name}.json`, req.body);
+        } else {
+            FileUtils.writeFile(`../gifs/${req.socket.remoteAddress}.json`, req.body);
+        }
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);
@@ -61,6 +65,16 @@ app.get("/start", function (req, res) {
 app.get("/stop", function (req, res) {
     if (req.body) {
         publisher.send("stop");
+        res.sendStatus(200);
+    } else {
+        console.log("Invalid body", req.body);
+        res.sendStatus(400);
+    }
+});
+
+app.get("/pause", function (req, res) {
+    if (req.body) {
+        publisher.send("pause");
         res.sendStatus(200);
     } else {
         console.log("Invalid body", req.body);

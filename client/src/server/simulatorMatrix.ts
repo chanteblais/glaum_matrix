@@ -2,7 +2,7 @@ import { Device } from "./device";
 
 export class SimulatorMatrix implements Device {
 
-    private callback: Function;
+    private readonly callback: Function;
 
     private readonly pixels: Array<string> = [];
 
