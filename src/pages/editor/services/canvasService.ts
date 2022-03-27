@@ -1,145 +1,178 @@
 import { boardColour } from "../config";
-import ColourUtils from "./colourutils";
-import { Point } from "../components/shapes";
+import Utils from "./utils";
+import { Frame, Image, Point } from "../components/shapes";
 import { pencilId } from "../tools/pencil";
 import { eraserId } from "../tools/eraser";
 import { bucketId } from "../tools/bucket";
-import { Drawing } from "./drawing";
 
 export class CanvasService {
 
-  private drawing: Drawing;
-  public emptyData: any[][];
-  public emptyBase64: string;
-  public previousPoint;
-  private canvas;
-  private context;
-  private width;
-  private height;
-  private selectedTool;
-  private selectedColour;
-  private data;
-  private updateDataCallback;
+	private enabled: Boolean;
+	public emptyData: any[][];
+	public emptyBase64: string;
+	public previousPoint;
+	private canvas;
+	private context;
+	private width;
+	private height;
+	private selectedTool;
+	private selectedColour;
+	private data;
+	private updateFrameCallback;
 
-  constructor(drawing: Drawing) {
-    this.drawing = drawing;
-  }
+	public setupCanvas(canvas, width, height) {
+		this.width = width;
+		this.height = height;
+		this.canvas = canvas;
+		this.context = this.canvas.getContext("2d");
+		this.context.globalAlpha = 1;
+		this.emptyData = [...Array(this.width)].map(() => Array(this.height).fill(boardColour));
+		this.clear();
+	}
 
-  public setupCanvas(canvas, width, height) {
-    this.width = width;
-    this.height = height;
-    this.canvas = canvas;
-    this.context = this.canvas.getContext("2d");
-    this.context.globalAlpha = 1;
-    this.emptyData = [...Array(this.width)].map(() => Array(this.height).fill(boardColour));
-    this.clear();
-    this.emptyBase64 = this.getDataURL();
-    this.drawing.updateFrame();
-  }
+	public setUpdateCurrentFrameCallback(updateFrameCallback) {
+		this.updateFrameCallback = updateFrameCallback;
+	}
 
-  setData(data) {
-    this.data = data;
-  }
+	public setTool(tool) {
+		this.selectedTool = tool;
+	}
 
-  setUpdateDataCallback(setCurrentData) {
-    this.updateDataCallback = setCurrentData;
-  }
+	public setColour(colour) {
+		this.selectedColour = colour;
+		this.context.fillStyle = Utils.getCSSColourFromRGBArray(colour);
+	}
 
-  publishData(){
-    this.updateDataCallback(this.data);
-  }
+	public setEnabled(enabled) {
+		this.enabled = enabled;
+	}
 
-  public beforePerform() {
-    this.previousPoint = new Point(undefined, undefined);
-  }
+	public beforePerform() {
+		this.previousPoint = new Point(undefined, undefined);
+	}
 
-  public perform(clientX, clientY, spot) {
-    if (spot && this.previousPoint.x !== undefined) {
-      return; // Don't re-paint the last point in a streak
-    }
+	public perform(clientX, clientY, spot) {
+		if (!this.enabled) {
+			return;
+		}
 
-    // Extrapolate the drawing area based on the pixel size
-    const rect = this.canvas.getBoundingClientRect();
-    let x = clientX - rect.left;
-    let y = clientY - rect.top;
-    x = Math.floor(this.width * x / this.canvas.clientWidth);
-    y = Math.floor(this.height * y / this.canvas.clientHeight);
+		if (spot && this.previousPoint.x !== undefined) {
+			return; // Don't re-paint the last point in a streak
+		}
 
-    if (this.selectedTool === pencilId) {
-      const point = new Point(x, y);
-      if (!point.equals(this.previousPoint) || spot) {
-        this.previousPoint = point;
-        this.draw(point.x, point.y);
-      }
-    } else if (this.selectedTool === eraserId) {
-      this.erase(x, y);
-    } else if (this.selectedTool === bucketId && spot) {
-      this.fill(x, y, this.data[x][y]);
-    }
+		// Extrapolate the drawing area based on the pixel size
+		const rect = this.canvas.getBoundingClientRect();
+		let x = clientX - rect.left;
+		let y = clientY - rect.top;
+		x = Math.floor(this.width * x / this.canvas.clientWidth);
+		y = Math.floor(this.height * y / this.canvas.clientHeight);
 
-    this.publishData();
-    this.drawing.publish();
-  }
+		if (this.selectedTool === pencilId) {
+			const point = new Point(x, y);
+			if (!point.equals(this.previousPoint) || spot) {
+				this.previousPoint = point;
+				this.draw(point.x, point.y);
+			}
+		} else if (this.selectedTool === eraserId) {
+			this.erase(x, y);
+		} else if (this.selectedTool === bucketId && spot) {
+			this.fill(x, y, this.data[x][y]);
+		}
 
-  public draw(x, y) {
-    if (this.isInsideBoundaries(x, y)) {
-      this.data[x][y] = this.selectedColour;
-      this.context.fillRect(Math.floor(x * (this.canvas.width / this.width)), Math.floor(y * (this.canvas.height / this.height)), Math.floor(this.canvas.width / this.width), Math.floor(this.canvas.height / this.height));
-      // if (JSON.stringify(this.steps[this.steps.length - 1]) !== JSON.stringify([x, y, this.color, this.ctx.globalAlpha])) {
-      //  this.steps.push([x, y, this.color, this.ctx.globalAlpha]);
-      // }
-      this.drawing.updateFrame();
-    }
-  }
+		this.publishFrame();
+		// this.drawing.publish();
+	}
 
-  public erase(x, y) {
-    let temp = this.selectedColour;
-    this.setColour(boardColour);
-    this.draw(x, y);
-    this.setColour(temp);
-  }
+	public populate(data) {
+		if (data.length) {
+			let tmpColour;
+			if (this.selectedColour) {
+				tmpColour = this.selectedColour;
+			}
+			let i, j;
+			for (i = 0; i < this.width; i++) {
+				for (j = 0; j < this.height; j++) {
+					this.setColour(data[i][j]);
+					this.draw(i, j);
+				}
+			}
+			if (tmpColour) {
+				this.setColour(tmpColour);
+			}
+		}
+	}
 
-  public fill(x, y, cc) {
-    if (this.isInsideBoundaries(x, y)) {
-      if (JSON.stringify(this.data[x][y]) === JSON.stringify(cc) && JSON.stringify(this.data[x][y]) !== JSON.stringify(this.selectedColour)) {
-        this.draw(x, y);
-        this.fill(x + 1, y, cc);
-        this.fill(x, y + 1, cc);
-        this.fill(x - 1, y, cc);
-        this.fill(x, y - 1, cc);
-      }
-    }
-  }
+	public erase(x, y) {
+		let temp = this.selectedColour;
+		this.setColour(boardColour);
+		this.draw(x, y);
+		this.setColour(temp);
+	}
 
-  public clear() {
-    this.context.fillStyle = ColourUtils.getCSSColourFromRGBArray(boardColour);
-    this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
-    this.data = [...this.emptyData];
-    if (this.selectedColour) {
-      this.setColour(this.selectedColour);
-    }
+	public clear() {
+		this.context.fillStyle = Utils.getCSSColourFromRGBArray(boardColour);
+		this.context.fillRect(0, 0, this.context.canvas.width, this.context.canvas.height);
+		// Technically didn't have to do this every time, but keeping it here for simplicity
+		this.emptyBase64 = this.canvas.toDataURL();
+		this.data = Utils.deepClone(this.emptyData);
+		if (this.selectedColour) {
+			this.setColour(this.selectedColour);
+		}
 
-    this.drawing.updateFrame();
-    this.drawing.publish();
-  }
+		this.publishFrame();
+	}
 
-  public isInsideBoundaries(x, y) {
-    return x >= 0 && x < this.width && y >= 0 && y < this.height;
-  }
+	public backward() {
+		this.shiftFrame(false);
+	}
 
-  public setTool(tool) {
-    this.selectedTool = tool;
-  }
+	public forward() {
+		this.shiftFrame(true);
+	}
 
-  public setColour(colour) {
-    this.selectedColour = colour;
-    this.context.fillStyle = ColourUtils.getCSSColourFromRGBArray(colour);
-    // if (window.palette instanceof Palette) {
-    //   window.palette.highlightSelectedColor(color);
-    // }
-  }
+	private publishFrame() {
+		let image = new Image(this.canvas.toDataURL());
+		this.updateFrameCallback(new Frame(image, Utils.deepClone(this.data)));
+	}
 
-  getDataURL() {
-    return this.canvas.toDataURL();
-  }
+	private draw(x, y) {
+		if (this.isInsideBoundaries(x, y)) {
+			this.data[x][y] = this.selectedColour;
+			this.context.fillRect(Math.floor(x * (this.canvas.width / this.width)), Math.floor(y * (this.canvas.height / this.height)), Math.floor(this.canvas.width / this.width), Math.floor(this.canvas.height / this.height));
+			// if (JSON.stringify(this.steps[this.steps.length - 1]) !== JSON.stringify([x, y, this.color, this.ctx.globalAlpha])) {
+			//  this.steps.push([x, y, this.color, this.ctx.globalAlpha]);
+			// }
+		}
+	}
+
+	private fill(x, y, cc) {
+		if (this.isInsideBoundaries(x, y)) {
+			if (JSON.stringify(this.data[x][y]) === JSON.stringify(cc) && JSON.stringify(this.data[x][y]) !== JSON.stringify(this.selectedColour)) {
+				this.draw(x, y);
+				this.fill(x + 1, y, cc);
+				this.fill(x, y + 1, cc);
+				this.fill(x - 1, y, cc);
+				this.fill(x, y - 1, cc);
+			}
+		}
+	}
+
+	private shiftFrame(right: boolean) {
+		let tmpColour = this.selectedColour;
+		let data = Utils.deepClone(this.data);
+		let i, j;
+		for (i = 1; i < this.width - 1; i++) {
+			for (j = 0; j < this.height; j++) {
+				let indexToCopy = right ? data[i - 1] : data[i + 1];
+				this.setColour(indexToCopy[j]);
+				this.draw(i, j);
+			}
+		}
+		this.setColour(tmpColour);
+		this.publishFrame();
+	}
+
+	private isInsideBoundaries(x, y) {
+		return x >= 0 && x < this.width && y >= 0 && y < this.height;
+	}
 }

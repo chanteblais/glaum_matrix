@@ -1,38 +1,96 @@
 import { Card, CardContent, useMediaQuery } from "@mui/material";
-import React, { ReactComponentElement } from "react";
+import React, { useEffect, useState } from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Theme } from "@mui/material/styles";
-import { colours } from "./config";
-import { FramesService } from "./services/framesService";
+import { Frame } from "./components/shapes";
+import Utils from "./services/utils";
 
-const Gallery = ({ frames }) => {
+interface GalleryProps {
+	frames: Frame[];
+	selectFrame;
+	updateFrames;
+}
 
-  const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+const Gallery = ({ frames, selectFrame, updateFrames }: GalleryProps) => {
 
-  return (
-    <Card id="">
-      <CardContent
-        sx={{
-          padding: {
-            xs: 1,
-            md: 4,
-          },
-          paddingBottom: {
-            xs: 1,
-            md: 4,
-            "&:last-of-type": {
-              paddingBottom: isSmallScreen ? "0.25rem" : "1rem"
-            }
-          },
-          display: "flex",
-          flexWrap: "wrap"
-        }}
-      >
-        {frames.map((frame, i) => {
-          console.log(frame[0]);
-          return <img key={i} src={frame[0].src} alt="adf"/>;
-        })}
-      </CardContent>
-    </Card>);
+	const [isBrowser, setIsBrowser] = useState(false);
+
+	useEffect(() => {
+		setIsBrowser(process.browser);
+	}, []);
+
+	const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+
+	const reorder = (list, startIndex, endIndex) => {
+		const result = Utils.deepClone(list);
+		const [removed] = result.splice(startIndex, 1);
+		result.splice(endIndex, 0, removed);
+		return result;
+	};
+
+	function onDragEnd(result) {
+		// dropped outside the list
+		if (!result.destination) {
+			return;
+		}
+
+		const items = reorder(
+			frames,
+			result.source.index,
+			result.destination.index
+		);
+
+		updateFrames(items);
+	}
+
+	return isBrowser ? (
+		<DragDropContext onDragEnd={onDragEnd}>
+			<Droppable droppableId="droppable" direction="horizontal">
+				{(provided, snapshot) => (
+					<Card>
+						<CardContent
+							ref={provided.innerRef}
+							sx={{
+								//   paddingBottom: {
+								//     xs: 1,
+								//     md: 4,
+								//     "&:last-of-type": {
+								//       paddingBottom: isSmallScreen ? "0.25rem" : "1rem"
+								//     }
+								//   },
+								overflow: "auto",
+								display: "flex",
+							}}
+							{...provided.droppableProps}
+						>
+							{frames.map((item, index) => (
+								<Draggable key={item.key} draggableId={item.key.toString()} index={index}>
+									{(provided, snapshot) => (
+										<div
+											ref={provided.innerRef}
+											{...provided.draggableProps}
+											{...provided.dragHandleProps}
+										>
+											<img
+												alt={item.key.toString()}
+												src={item.image.src}
+												style={{
+													border: item.current ? "1px solid white" : "none",
+													margin: "0 5px 0 5px"
+												}}
+												onClick={() => selectFrame(item)}
+											/>
+										</div>
+									)}
+								</Draggable>
+							))}
+							{provided.placeholder}
+						</CardContent>
+					</Card>
+				)}
+			</Droppable>
+		</DragDropContext>
+	) : null;
 };
 
 export default Gallery;

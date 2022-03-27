@@ -4,14 +4,15 @@ import FormatColorResetOutlinedIcon from "@mui/icons-material/FormatColorResetOu
 
 export const eraserId = "eraser";
 
-const Eraser = ({ selectedTool, selectTool }) => {
-  return (
-    <Tool id={eraserId}
-          icon={<FormatColorResetOutlinedIcon sx={{ fontSize: "1.75rem" }}/>}
-          selectedTool={selectedTool}
-          selectTool={selectTool}
-    />
-  );
+const Eraser = ({ selectedTool, selectTool, enabled }) => {
+	return (
+		<Tool id={eraserId}
+			  icon={<FormatColorResetOutlinedIcon sx={{ fontSize: "1.75rem" }}/>}
+			  enabled={enabled}
+			  selectedTool={selectedTool}
+			  selectTool={selectTool}
+		/>
+	);
 };
 
 export default Eraser;

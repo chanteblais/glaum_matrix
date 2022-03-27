@@ -4,14 +4,15 @@ import FormatColorFillTwoToneIcon from "@mui/icons-material/FormatColorFillTwoTo
 
 export const bucketId = "bucket";
 
-const Bucket = ({ selectedTool, selectTool }) => {
-  return (
-    <Tool id={bucketId}
-          icon={<FormatColorFillTwoToneIcon sx={{ fontSize: "1.75rem" }}/>}
-          selectedTool={selectedTool}
-          selectTool={selectTool}
-    />
-  );
+const Bucket = ({ selectedTool, selectTool, enabled }) => {
+	return (
+		<Tool id={bucketId}
+			  icon={<FormatColorFillTwoToneIcon sx={{ fontSize: "1.75rem" }}/>}
+			  enabled={enabled}
+			  selectedTool={selectedTool}
+			  selectTool={selectTool}
+		/>
+	);
 };
 
 export default Bucket;
