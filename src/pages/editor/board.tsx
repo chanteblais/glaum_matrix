@@ -20,7 +20,7 @@ const Board = ({ canvasService, width, height }) => {
 			canvasService.perform(e.touches[0].clientX, e.touches[0].clientY, false);
 		});
 
-		canvasRef.current.addEventListener("mousedown", async e => {
+		canvasRef.current.addEventListener("mousedown", async () => {
 			canvasService.beforePerform();
 			active = true;
 			//window.app.publish().then();
@@ -30,7 +30,7 @@ const Board = ({ canvasService, width, height }) => {
 			canvasService.perform(e.clientX, e.clientY, true);
 			//window.app.publish().then();
 		});
-	}, []);
+	}, [canvasService, width, height]);
 
 	return (
 		<Card sx={{

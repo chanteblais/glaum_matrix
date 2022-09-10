@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const Duplicate = ({ framesService, enabled }) => {

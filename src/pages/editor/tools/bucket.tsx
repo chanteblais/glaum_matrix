@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import FormatColorFillTwoToneIcon from "@mui/icons-material/FormatColorFillTwoTone";
 
 export const bucketId = "bucket";

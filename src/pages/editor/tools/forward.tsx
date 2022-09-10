@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import ArrowForwardIosTwoToneIcon from "@mui/icons-material/ArrowForwardIosTwoTone";
 
 const Forward = ({ canvasService, enabled }) => {

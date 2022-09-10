@@ -1,12 +1,12 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StopIcon from "@mui/icons-material/Stop";
 import { createWorkerFactory, useWorker } from "@shopify/react-web-worker";
 
 const Play = ({ playGif, setPlayGif, frames, selectFrame }) => {
 
-	const createWorker = createWorkerFactory(() => import("../services/playGIFWorker"));
+	const createWorker = createWorkerFactory(() => import("../../../services/playGIFWorker"));
 	const worker = useWorker(createWorker);
 
 	async function play() {

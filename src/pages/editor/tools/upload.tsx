@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import CloudUploadOutlinedIcon from '@mui/icons-material/CloudUploadOutlined';
 
 const Upload = ({ canvasService, enabled }) => {

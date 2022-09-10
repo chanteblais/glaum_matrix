@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import ArrowBackIosNewTwoToneIcon from "@mui/icons-material/ArrowBackIosNewTwoTone";
 
 const Backward = ({ canvasService, enabled }) => {

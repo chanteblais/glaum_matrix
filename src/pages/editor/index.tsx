@@ -6,11 +6,10 @@ import Tools from "./tools";
 import Gallery from "./gallery";
 import GifControls from "./gifControls";
 import { pencilId } from "./tools/pencil";
-import { initialColour, matrixHeight, matrixWidth, maxNumberOfSwatches, predefinedColours } from "./config";
-import { resetServerContext } from "react-beautiful-dnd";
-import { CanvasService } from "./services/canvasService";
-import { FramesService } from "./services/framesService";
-import { Frame } from "./components/shapes";
+import { initialColour, matrixHeight, matrixWidth, maxNumberOfSwatches, predefinedColours } from "../../configs/config";
+import { CanvasService } from "../../services/canvasService";
+import { FramesService } from "../../services/framesService";
+import { Frame } from "../../components/shapes";
 
 const Editor = () => {
 
@@ -48,7 +47,7 @@ const Editor = () => {
 	const [selectedTool, setSelectedTool] = useState(pencilId);
 	useEffect(() => {
 		canvasService.setTool(selectedTool);
-	}, [selectedTool]);
+	}, [selectedTool, canvasService]);
 
 	// State for the colour palette
 	const [colours, setColours] = useState([...predefinedColours]);
@@ -57,7 +56,7 @@ const Editor = () => {
 	const [selectedColour, setSelectedColour] = useState(initialColour);
 	useEffect(() => {
 		canvasService.setColour(selectedColour);
-	}, [selectedColour]);
+	}, [selectedColour, canvasService]);
 
 	function colourPicked(colour) {
 		console.log("Colour picked:", colour);
@@ -66,13 +65,13 @@ const Editor = () => {
 	}
 
 	function updateColours(colour) {
-		for (let existing of colours) {
+		for (const existing of colours) {
 			if (JSON.stringify(existing) === JSON.stringify(colour)) {
 				return;
 			}
 		}
 		console.log("Adding new colour");
-		let newColours = colours;
+		const newColours = [...colours];
 		newColours.splice(predefinedColours.length, null, colour);
 		setColours(newColours.slice(0, maxNumberOfSwatches));
 	}
@@ -86,7 +85,7 @@ const Editor = () => {
 	// Disable canvas when gifs are playing
 	useEffect(() => {
 		canvasService.setEnabled(!playGif);
-	}, [playGif]);
+	}, [canvasService, playGif]);
 
 	return (
 		<Grid container spacing={{ xs: 1, lg: 4 }}>
@@ -125,8 +124,3 @@ const Editor = () => {
 };
 
 export default Editor;
-
-export async function getServerSideProps(context) {
-	resetServerContext();
-	return { props: { data: [] } };
-}

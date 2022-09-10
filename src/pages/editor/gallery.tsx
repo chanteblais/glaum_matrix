@@ -1,9 +1,8 @@
-import { Card, CardContent, useMediaQuery } from "@mui/material";
+import { Card, CardContent } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { Theme } from "@mui/material/styles";
-import { Frame } from "./components/shapes";
-import Utils from "./services/utils";
+import { Frame } from "../../components/shapes";
+import Utils from "../../services/utils";
 
 interface GalleryProps {
 	frames: Frame[];
@@ -16,10 +15,10 @@ const Gallery = ({ frames, selectFrame, updateFrames }: GalleryProps) => {
 	const [isBrowser, setIsBrowser] = useState(false);
 
 	useEffect(() => {
-		setIsBrowser(process.browser);
+		setIsBrowser(typeof window !== 'undefined');
 	}, []);
 
-	const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
+	// const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
 	const reorder = (list, startIndex, endIndex) => {
 		const result = Utils.deepClone(list);
@@ -46,7 +45,7 @@ const Gallery = ({ frames, selectFrame, updateFrames }: GalleryProps) => {
 	return isBrowser ? (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<Droppable droppableId="droppable" direction="horizontal">
-				{(provided, snapshot) => (
+				{(provided) => (
 					<Card>
 						<CardContent
 							ref={provided.innerRef}
@@ -65,7 +64,7 @@ const Gallery = ({ frames, selectFrame, updateFrames }: GalleryProps) => {
 						>
 							{frames.map((item, index) => (
 								<Draggable key={item.key} draggableId={item.key.toString()} index={index}>
-									{(provided, snapshot) => (
+									{(provided) => (
 										<div
 											ref={provided.innerRef}
 											{...provided.draggableProps}

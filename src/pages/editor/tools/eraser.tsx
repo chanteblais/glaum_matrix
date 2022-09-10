@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import FormatColorResetOutlinedIcon from "@mui/icons-material/FormatColorResetOutlined";
 
 export const eraserId = "eraser";

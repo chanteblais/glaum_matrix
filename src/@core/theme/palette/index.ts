@@ -6,7 +6,7 @@ const DefaultPalette = (mode: PaletteMode, themeColor: ThemeColor) => {
   // ** Vars
   const lightColor = '58, 53, 65'
   const darkColor = '231, 227, 252'
-  const mainColor = mode === 'light' ? lightwColor : darkColor
+  const mainColor = mode === 'light' ? lightColor : darkColor
 
   const primaryGradient = () => {
     if (themeColor === 'primary') {

@@ -66,7 +66,7 @@ class App extends Component {
         for (let i = 0; i < this.matrixSize; i++) {
             this.columns.push({accessor: "c" + i});
         }
-        this.eventSource = new EventSource("http://localhost:3000/simulator");
+        this.eventSource = new EventSource("http://localhost/simulator");
     }
 
     getInitialFlightData(matrixSize) {

@@ -1,5 +1,5 @@
 import React from "react";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 import CreateTwoToneIcon from "@mui/icons-material/CreateTwoTone";
 
 export const pencilId = "pencil";

@@ -1,6 +1,6 @@
 import React from "react";
 import ClearIcon from "@mui/icons-material/Clear";
-import Tool from "../components/tool";
+import Tool from "../../../components/tool";
 
 const Clear = ({ canvasService, enabled }) => {
 	return (
