@@ -51,32 +51,33 @@ function Table({
 
 class App extends Component {
 
-    matrixSize = 16;
+    matrixWidth = 16;
+    matrixHeight = 8;
 
     constructor(props) {
         super(props);
         this.state = {
-            data: this.getInitialFlightData(this.matrixSize)
+            data: this.getInitialFlightData(this.matrixWidth, this.matrixHeight)
         };
 
         this.columns = [{
-            accessor: "line"
+            accessor: "column"
         }];
 
-        for (let i = 0; i < this.matrixSize; i++) {
+        for (let i = 0; i < this.matrixWidth; i++) {
             this.columns.push({accessor: "c" + i});
         }
-        this.eventSource = new EventSource("http://localhost/simulator");
+        this.eventSource = new EventSource("http://localhost:4000/events");
     }
 
-    getInitialFlightData(matrixSize) {
+    getInitialFlightData(matrixWidth, matrixHeight) {
         let data = [];
-        for (let i = 0; i < matrixSize; i++) {
+        for (let i = 0; i < matrixHeight; i++) {
             let line = {
-                line: i
+                lineNumber: i
             };
-            for (let j = 0; j < matrixSize; j++) {
-                line["c" + j] = "#000000";
+            for (let column = 0; column < matrixWidth; column++) {
+                line["c" + column] = "#000000";
             }
             data.push(line);
         }
@@ -84,38 +85,35 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.eventSource.addEventListener("matrixUpdate", (e) => this.updateMatrix(JSON.parse(e.data)));
-    }
-
-    listToMatrix(list, elementsPerSubArray) {
-        let matrix = [], i, k;
-        for (i = 0, k = -1; i < list.length; i++) {
-            if (i % elementsPerSubArray === 0) {
-                k++;
-                matrix[k] = [];
-            }
-            matrix[k].push(list[i]);
-        }
-        return matrix;
+        this.eventSource.addEventListener("matrixUpdate", event => this.updateMatrix(JSON.parse(event.data)));
     }
 
     updateMatrix(matrixValues) {
         if (matrixValues) {
-            let values = matrixValues.split(",");
-            if (values.length === this.matrixSize * this.matrixSize) {
-                let matrix = this.listToMatrix(values, this.matrixSize);
-                let newData = this.state.data.map((item) => {
-                    let line = matrix[item.line];
-                    if (line && line.length === this.matrixSize) {
-                        for (let i = 0; i < line.length; i++) {
-                            item["c" + i] = line[i];
+            if (matrixValues.length === this.matrixWidth) {
+                let newData = this.state.data.map((line) => {
+                    for (let column = 0; column < matrixValues.length; column++) {
+                        if (this.matrixHeight === matrixValues[column].length) {
+                            let colour = matrixValues[column][line.lineNumber];
+                            line["c" + column] = App.rgbToHex(colour[0], colour[1], colour[2]);
+                        } else {
+                            console.log(`Matrix height ${matrixValues[column].length} doesn't match simulator height of ${this.matrixHeight}`);
                         }
-                        return item;
                     }
+                    return line;
                 });
                 this.setState(Object.assign({}, {data: newData}));
+            } else {
+                console.log(`Matrix width ${matrixValues.length} doesn't match simulator width of ${this.matrixWidth}`);
             }
         }
+    }
+
+    static rgbToHex(r, g, b) {
+        if (r > 255 || g > 255 || b > 255)
+            throw "Invalid color component";
+
+        return "#" + ("000000" + ((r << 16) | (g << 8) | b).toString(16)).slice(-6);
     }
 
     render() {

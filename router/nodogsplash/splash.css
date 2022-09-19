@@ -1,0 +1,14 @@
+body {
+	background-color: white;
+	color: black;
+	margin-left: 5%;
+	margin-right: 5%;
+	text-align: center;
+}
+
+img {
+	width: 40%;
+	max-width: 180px;
+	margin-left: 0%;
+	margin-right: 5%;
+}

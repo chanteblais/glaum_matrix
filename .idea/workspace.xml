@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="0ac697d0-6540-46ee-a7c6-e26b189809aa" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/editor/src/components/drawing.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/editor/src/services/publishingService.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/publisher/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/publisher/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/publisher/.eslintrc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/publisher/src/common/fileUtils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/typescript-version.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.prettierrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gifs/arrows.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gifs/diamondShift.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/next-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/apple-touch-icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/avatars/8.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/analog-clock.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/background-user.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/glass-house.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/iPhone-11-pro.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/logo-aviato.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/logo-bitbank.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/logo-zipcar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/paper-boat.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/paypal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/cards/watch-on-hand.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/editor/overview.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/editor/rabbit.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/editor/toolbar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/editor/turtle.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/favicon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/american-bank.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/aws.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/citi-bank.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/digital-ocean.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/github.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/google.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/gumroad.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/mastercard-label.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/slack.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/logos/stripe.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/chart.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/materio-pro-banner.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/paypal.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/triangle-dark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/triangle-light.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/trophy.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/upgrade-banner-dark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/misc/upgrade-banner-light.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/401.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/500.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/auth-v1-mask-dark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/auth-v1-mask-light.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/auth-v1-tree-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/auth-v1-tree.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/misc-mask-dark.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/misc-mask-light.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/pose-m-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/tree-2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/tree-3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/images/pages/tree.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/vercel.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/simulator/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/simulator/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/components/card-statistics/card-stats-vertical/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/components/card-statistics/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/components/react-apexcharts/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/components/scroll-to-top/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/context/settingsContext.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/hooks/useSettings.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/BlankLayout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/VerticalLayout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/shared-components/ModeToggler.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/shared-components/NotificationDropdown.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/shared-components/UserDropdown.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/shared-components/footer/FooterContent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/shared-components/footer/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/appBar/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/navigation/Drawer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/navigation/VerticalNavHeader.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/navigation/VerticalNavItems.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/navigation/VerticalNavLink.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/navigation/VerticalNavSectionTitle.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/components/vertical/navigation/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/layouts/utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/styles/libs/react-apexcharts/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/styles/libs/react-datepicker/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/ThemeComponent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/ThemeOptions.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/breakpoints/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/globalStyles.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/accordion.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/alerts.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/avatars.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/backdrop.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/button.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/card.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/chip.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/dateTimePicker.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/dialog.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/divider.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/input.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/link.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/list.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/menu.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/pagination.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/paper.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/popover.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/rating.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/select.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/snackbar.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/switches.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/table.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/tabs.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/timeline.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/toggleButton.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/tooltip.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/overrides/typography.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/palette/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/shadows/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/spacing/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/theme/typography/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/utils/create-emotion-cache.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/@core/utils/hex-to-rgba.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/common/fileUtils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/frame.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/shapes.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/tool.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/configs/config.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/configs/themeConfig.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/UserLayout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/components/UserIcon.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/components/vertical/AppBarContent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/navigation/vertical/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/401.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/404.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/500.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/_app.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/_document.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/account-settings/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/api/draw.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/cards/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/board.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/gallery.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/gifControls.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/palette.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/add.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/backward.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/bucket.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/clear.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/duplicate.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/eraser.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/forward.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/pencil.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/play.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/editor/tools/upload.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/form-layouts/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/icons/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/pages/error/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/pages/login/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/pages/register/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/tables/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/typography/index.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/canvasService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/framesService.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/playGIFWorker.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/useClickOutside.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/account-settings/TabAccount.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/account-settings/TabInfo.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/account-settings/TabSecurity.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardAppleWatch.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardFacebook.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardHorizontalRatings.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardImgTop.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardInfluencer.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardLinkedIn.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardMembership.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardMobile.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardNavigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardNavigationCenter.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardSupport.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardTwitter.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardUser.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardVerticalRatings.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/cards/CardWithCollapse.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/Brightness.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/DepositWithdraw.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/SalesByCountries.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/StatisticsCard.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/Table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/TotalEarning.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/Trophy.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/dashboard/WeeklyOverview.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/form-layouts/FormLayoutsAlignment.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/form-layouts/FormLayoutsBasic.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/form-layouts/FormLayoutsIcons.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/form-layouts/FormLayoutsSeparator.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pages/auth/FooterIllustration.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pages/misc/FooterIllustrations.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/tables/TableBasic.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/tables/TableCollapsible.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/tables/TableCustomized.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/tables/TableDense.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/tables/TableSpanning.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/tables/TableStickyHeader.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/typography/TypographyHeadings.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/typography/TypographyTexts.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/workers/devices/device.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/workers/devices/raspberryPi.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/workers/devices/simulator.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/workers/dispatcher.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/workers/publisher.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.jsx.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="2ExoZFM63XIudqf8QkEpvTldHTx" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="javascript.nodejs.core.library.configured.version" value="17.8.0" />
+    <property name="javascript.nodejs.core.library.typings.version" value="17.0.45" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/editor/src/services" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="yarn" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/editor/node_modules/typescript/lib" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/editor/src/services" />
+      <recent name="$PROJECT_DIR$/publisher/src" />
+      <recent name="$PROJECT_DIR$/publisher" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/publisher/src" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="0ac697d0-6540-46ee-a7c6-e26b189809aa" name="Changes" comment="" />
+      <created>1663546650078</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1663546650078</updated>
+      <workItem from="1663546651199" duration="2071000" />
+      <workItem from="1663548979909" duration="9408000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+</project>
