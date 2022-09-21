@@ -1,0 +1,11 @@
+[Unit]
+Description=Glaum Publisher
+
+[Service]
+ExecStart=/usr/bin/yarn start
+Restart=always
+WorkingDirectory=/home/glaum/glaum_matrix/publisher
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

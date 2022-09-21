@@ -67,7 +67,10 @@ class App extends Component {
         for (let i = 0; i < this.matrixWidth; i++) {
             this.columns.push({accessor: "c" + i});
         }
-        this.eventSource = new EventSource("http://localhost:4000/events");
+        this.eventSource = new EventSource("/events");
+        this.eventSource.onerror = function(e) {
+            console.log(e);
+        };
     }
 
     getInitialFlightData(matrixWidth, matrixHeight) {

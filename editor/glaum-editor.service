@@ -1,0 +1,11 @@
+[Unit]
+Description=Glaum Editor
+
+[Service]
+ExecStart=/usr/bin/yarn start
+Restart=always
+WorkingDirectory=/home/glaum/glaum_matrix/editor
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

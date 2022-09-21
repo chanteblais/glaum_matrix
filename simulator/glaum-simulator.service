@@ -1,0 +1,11 @@
+[Unit]
+Description=Glaum Simulator
+
+[Service]
+ExecStart=/usr/bin/yarn dev
+Restart=always
+WorkingDirectory=/home/glaum/glaum_matrix/simulator
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

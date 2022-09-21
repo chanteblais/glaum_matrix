@@ -8,7 +8,7 @@ module.exports = {
 		jsconfigPaths: true // enables it for both jsconfig.json and tsconfig.json
 	},
 	env: {
-		imagesPath: "/tmp/matrix"
+		imagesPath: "/var/matrix"
 	},
 	webpack: config => {
 		config.resolve.alias = {

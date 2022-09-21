@@ -1,4 +1,5 @@
 import { Device } from "./device";
+import ws281x from "rpi-ws281x-native";
 
 export class RaspberryPi implements Device {
 
@@ -29,44 +30,35 @@ export class RaspberryPi implements Device {
 
 	private pixels: Uint32Array = new Uint32Array();
 
-	private ws281x;
+	private channel;
 
 	public start(): void {
-		const config = {
-			// The RGB sequence may vary on some strips. Valid values
-			// are "rgb", "rbg", "grb", "gbr", "bgr", "brg".
-			// Default is "rgb".
-			// RGBW strips are not currently supported.
-			stripType: "grb",
-			// Set the GPIO number to communicate with the Neopixel strip (default 18)
+		const options = {
+			// Strip type
+			stripType: ws281x.stripType.WS2812,
+			// Set the GPIO number to communicate with the Matrix
 			gpio: 18,
 			// Set full brightness, a value from 0 to 255 (default 255)
 			brightness: 120,
 			// Use DMA 10 (default 10)
 			dma: 10,
-			// Number of leds in my strip
-			leds: 109
+
+			invert: false,
+			freq: 800000
 		};
 
-		if (require("detect-rpi")()) {
-			// Configure ws281x
-			// this.ws281x = require("rpi-ws281x");
-			// this.ws281x.configure(config);
+		// Configure ws281x
+		this.channel = ws281x(256, options);
+
+		const colorArray = this.channel.array;
+		for (let i = 0; i < this.channel.count; i++) {
+			colorArray[i] = 0xffcc22;
 		}
 
-		const ws281x = require("rpi-ws281x-native"),
-			canvas = require("rpi-ws281x-canvas").create(10, 10),
-			ctx = canvas.getContext("2d");
-
-		ws281x.init(100);
-
-		ctx.fillStyle = "blue";
-		ctx.fillRect(2, 2, 8, 8);
-
-		ws281x.render(canvas.toUint32Array());
+		ws281x.render();
 
 		// Pixel array
-		this.pixels = new Uint32Array(config.leds);
+		// this.pixels = new Uint32Array(config.leds);
 	}
 
 	public drawPixelFromHex(pixelIndex: number, hex: string): void {
@@ -82,6 +74,6 @@ export class RaspberryPi implements Device {
 	}
 
 	show(): void {
-		this.ws281x.render(this.pixels);
+		// ws281x.render(this.pixels);
 	}
 }

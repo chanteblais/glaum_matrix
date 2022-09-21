@@ -1,19 +1,35 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "private": true,
-  "proxy": "http://localhost:4000",
+  "name": "glaum-matrix-simulator",
+  "description": "The Glåüm Matrix Simulator",
+  "license": "MIT",
+  "version": "1.0.0",
+  "author": {
+    "name": "Glåümers",
+    "url": "https://github.com/chanteblais/glaum/graphs/contributors"
+  },
+  "bugs": {
+    "url": "https://github.com/chanteblais/glaum/issues"
+  },
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chanteblais/glaum.git"
+  },
+  "homepage": "https://glaum.ca",
+  "scripts": {
+    "dev": "PORT=82 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
+    "http-proxy-middleware": "^2.0.6",
+    "express": "^4.18.1",
+    "serve": "^14.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
     "react-table": "^7.7.0"
-  },
-  "scripts": {
-    "start": "PORT=3006 react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
   },
   "browserslist": {
     "production": [

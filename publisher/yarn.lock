@@ -1697,11 +1697,6 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rpi-ws281x-canvas@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/rpi-ws281x-canvas/-/rpi-ws281x-canvas-0.1.0.tgz#a280ad7f4efef252c28c0af5212c30ebca3a24cd"
-  integrity sha512-CYnphDZ76QacUa988BzdkXPJQ9riEFTwRxqJpGEiqYGEmQ0BhklurM+vKA2/B0f6Hdxn9cCNKQBtUF2bJbq4AA==
-
 rpi-ws281x-native@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/rpi-ws281x-native/-/rpi-ws281x-native-1.0.4.tgz#df5a50ecfdd165f8a10df891d5eba2cec2577fcb"
