@@ -28,7 +28,7 @@ export class RaspberryPi implements Device {
 			107, 89, 85, 67, 63, 45, 41, 23, 19, 1,
 			108, 88, 86, 66, 64, 44, 42, 22, 20, 0];
 
-	private pixels: Uint32Array = new Uint32Array();
+	private pixels = [];
 
 	private channel;
 
@@ -39,7 +39,7 @@ export class RaspberryPi implements Device {
 			// Set the GPIO number to communicate with the Matrix
 			gpio: 18,
 			// Set full brightness, a value from 0 to 255 (default 255)
-			brightness: 120,
+			brightness: 256,
 			// Use DMA 10 (default 10)
 			dma: 10,
 
@@ -48,9 +48,10 @@ export class RaspberryPi implements Device {
 		};
 
 		// Configure ws281x
-		this.channel = ws281x(256, options);
+		this.channel = ws281x(12, {stripType: 'ws2812'});
 
 		const colorArray = this.channel.array;
+                console.log("Pixel count:", this.channel.count)
 		for (let i = 0; i < this.channel.count; i++) {
 			colorArray[i] = 0xffcc22;
 		}
@@ -61,19 +62,34 @@ export class RaspberryPi implements Device {
 		// this.pixels = new Uint32Array(config.leds);
 	}
 
-	public drawPixelFromHex(pixelIndex: number, hex: string): void {
-		const rgbGroups = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		if (rgbGroups) {
-			const r = parseInt(rgbGroups[1], 16);
-			const g = parseInt(rgbGroups[2], 16);
-			const b = parseInt(rgbGroups[3], 16);
-
-			const mappedIndex = this.ledStripMap[pixelIndex];
-			this.pixels[mappedIndex] = (r << 16) | (g << 8) | b;
-		}
+	public drawPixelFromHex(pixelIndex: number, colour: []): void {
+                console.log("Params",pixelIndex, colour[0][0], colour[0][1], colour[0][2]);
+		//#const intValue = ((colour[0][0] & 0xff) << 16) | ((colour[0][1] & 0xff) << 8) | (colour[0][2] & 0xff);
+                //#const intValue = ((colour[0][0] & 0x0ff) << 16) | ((colour[0][1] & 0x0ff) << 8) | (colour[0][2] & 0x0ff));
+		const r = colour[0][0];
+		const g = colour[0][1];
+		const b = colour[0][2];
+		const hex = "0x" + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1);
+	
+		console.log("Hex value", hex);
+		this.pixels[pixelIndex] = hex; 
 	}
 
-	show(): void {
+	public show(): void {
+		const colorArray = this.channel.array;
+                for (let i = 0; i < this.channel.count; i++) {
+                        const mappedIndex = this.ledStripMap[i];
+                        console.log(this.pixels[i])
+                        colorArray[i] = this.pixels[i];
+                }
+
+                ws281x.render();
+
+
 		// ws281x.render(this.pixels);
+	}
+
+	private rgb2Int(r, g, b): int {
+		return ((r & 0xff) << 16) | ((g & 0xff) << 8) | (b & 0xff);
 	}
 }
